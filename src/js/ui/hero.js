@@ -45,7 +45,7 @@ function buildOverview(){
   var R = REGIONS[currentRegion], now = new Date().getMonth();
   document.getElementById('ov-title').textContent = R.name + ' trout calendar';
   document.getElementById('ov-best').textContent = R.bestMonths;
-  document.getElementById('season-bar').innerHTML = R.hatch.map(function(h, i){ return '<div class="m' + (i === now ? ' now' : '') + '" title="' + h.m + ': ' + h.note.replace(/"/g,'&quot;') + '"><i class="' + h.r + '"></i><span>' + MON3[i][0] + '</span></div>'; }).join('');
+  document.getElementById('season-bar').innerHTML = R.hatch.map(function(h, i){ return '<div class="m' + (i === now ? ' now' : '') + '" title="' + h.m + ': ' + h.note.replace(/"/g,'&quot;') + '" role="listitem"><i class="' + h.r + '" aria-hidden="true"></i><span aria-hidden="true">' + MON3[i][0] + '</span><span class="sr-only">' + h.m + ': ' + ({prime:'prime',good:'good',tech:'technical',wd:'weather dependent'}[h.r]) + '</span></div>'; }).join('');
   var h = R.hatch[now];
   document.getElementById('tm-title').textContent = h.m + ' in ' + R.name;
   document.getElementById('tm-flies').innerHTML = '<strong>' + ({prime:'Prime',good:'Good',tech:'Technical',wd:'Weather dependent'}[h.r]) + '.</strong> ' + h.flies;

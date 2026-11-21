@@ -43,21 +43,21 @@
         <h1 class="heading-5" id="auth-heading">Welcome to FlyGuide</h1>
         <p class="body-6">South Africa's fly fishing guide. Sign in or start your free trial.</p>
         <div class="auth-tabs" role="tablist">
-          <button class="auth-tab active" role="tab" onclick="switchAuthTab('login',this)" id="auth-tab-login">Sign in</button>
-          <button class="auth-tab" role="tab" onclick="switchAuthTab('signup',this)" id="auth-tab-signup">Create account</button>
+          <button class="auth-tab active" role="tab" aria-selected="true" aria-controls="auth-form-login" onclick="switchAuthTab('login',this)" id="auth-tab-login">Sign in</button>
+          <button class="auth-tab" role="tab" aria-selected="false" aria-controls="auth-form-signup" onclick="switchAuthTab('signup',this)" id="auth-tab-signup">Create account</button>
         </div>
         <div id="auth-error" class="auth-error" role="alert"></div>
-        <div id="auth-form-login" data-enter="handleLogin">
+        <div id="auth-form-login" role="tabpanel" aria-labelledby="auth-tab-login" data-enter="handleLogin">
           <div class="auth-field"><label for="login-email">Email address</label><input type="email" id="login-email" placeholder="you@example.co.za" autocomplete="email" required/></div>
-          <div class="auth-field"><label for="login-password">Password</label><input type="password" id="login-password" placeholder="Your password" autocomplete="current-password" required/></div>
+          <div class="auth-field"><label for="login-password">Password</label><div class="pw-wrap"><input type="password" id="login-password" placeholder="Your password" autocomplete="current-password" required/><button type="button" class="pw-toggle" onclick="togglePassword('login-password',this)" aria-pressed="false" aria-label="Show password">Show</button></div></div>
           <label class="check-row"><input type="checkbox" id="remember-me" checked/> Remember me on this device</label>
           <button type="button" class="btn btn-primary auth-btn" onclick="handleLogin()">Sign in</button>
           <div class="auth-skip"><button type="button" class="link" onclick="forgotPassword()">Forgot your password?</button></div>
         </div>
-        <div id="auth-form-signup" style="display:none" data-enter="handleSignup">
+        <div id="auth-form-signup" role="tabpanel" aria-labelledby="auth-tab-signup" style="display:none" data-enter="handleSignup">
           <div class="auth-field"><label for="signup-name">Full name</label><input type="text" id="signup-name" placeholder="Thabo Nkosi" autocomplete="name" required/></div>
           <div class="auth-field"><label for="signup-email">Email address</label><input type="email" id="signup-email" placeholder="you@example.co.za" autocomplete="email" required/></div>
-          <div class="auth-field"><label for="signup-password">Password</label><input type="password" id="signup-password" placeholder="At least 6 characters" autocomplete="new-password" required minlength="6"/></div>
+          <div class="auth-field"><label for="signup-password">Password</label><div class="pw-wrap"><input type="password" id="signup-password" placeholder="At least 6 characters" autocomplete="new-password" required minlength="6"/><button type="button" class="pw-toggle" onclick="togglePassword('signup-password',this)" aria-pressed="false" aria-label="Show password">Show</button></div></div>
           <button type="button" class="btn btn-primary auth-btn" onclick="handleSignup()">Create my account</button>
         </div>
         <div class="auth-divider">or</div>
@@ -72,7 +72,7 @@
   <div class="plan-box">
     <h2 class="heading-5 plan-title" id="plan-heading">Choose your plan</h2>
     <p class="body-6 plan-subtitle">Start free for 7 days. No card needed to try it.</p>
-    <div class="plan-toggle">
+    <div class="plan-toggle" role="group" aria-label="Billing period">
       <button class="plan-toggle-btn active" onclick="setBilling('monthly',this)" id="billing-monthly">Monthly</button>
       <button class="plan-toggle-btn" onclick="setBilling('annual',this)" id="billing-annual">Annual</button>
     </div>
@@ -81,7 +81,7 @@
       <div class="plan-name">Free</div>
       <div class="plan-price">R0 <span>forever</span></div>
       <div class="plan-desc">7 day full trial, then limited access</div>
-      <ul class="plan-features"><li>Dullstroom region</li><li>Basic fly recommendations</li><li class="locked">All 4 South African regions</li><li class="locked">Catch log and session history</li><li class="locked">Stats and charts</li><li class="locked">Rig builder and tippet guide</li><li class="locked">Live weather integration</li></ul>
+      <ul class="plan-features"><li>Dullstroom region</li><li>Basic fly recommendations</li><li class="locked"><span class="sr-only">Not included: </span>All 4 South African regions</li><li class="locked"><span class="sr-only">Not included: </span>Catch log and session history</li><li class="locked"><span class="sr-only">Not included: </span>Stats and charts</li><li class="locked"><span class="sr-only">Not included: </span>Rig builder and tippet guide</li><li class="locked"><span class="sr-only">Not included: </span>Live weather integration</li></ul>
     </div>
     <div class="plan-card selected" id="plan-pro" onclick="selectPlan('pro')" role="button" tabindex="0" style="margin-top:var(--s-300)">
       <div class="plan-badge">Most popular · 7 day free trial</div>
@@ -181,7 +181,7 @@
         <div class="eyebrow" style="color:var(--copper)">Season at a glance</div>
         <h3 class="heading-6" style="margin-top:var(--s-50)" id="ov-title">Dullstroom trout calendar</h3>
         <p class="body-6 muted" id="ov-best" style="margin-top:var(--s-50)"></p>
-        <div class="season-bar" id="season-bar"></div>
+        <div class="season-bar" id="season-bar" role="list" aria-label="Season rating by month"></div>
         <div class="legend"><span><i style="background:var(--forest)"></i>Prime</span><span><i style="background:#6E8F75"></i>Good</span><span><i style="background:#C9B27C"></i>Technical</span><span><i style="background:var(--border)"></i>Weather dependent or closed</span></div>
       </div>
       <div class="card" style="display:flex;flex-direction:column;gap:var(--s-100)">
@@ -275,13 +275,13 @@
 <!-- ═══ FLY BOX ═══ -->
 <section id="panel-flybox" class="panel" aria-labelledby="fb-h">
   <div class="page-head"><span class="eyebrow" id="fb-eyebrow">Dullstroom</span><h1 class="heading-3" id="fb-h">Fly box</h1><p class="body-3" id="flybox-note">Every pattern FlyGuide uses for this region, grouped by type.</p></div>
-  <div class="press-row" id="flybox-filter" style="margin-bottom:var(--s-300)">
-    <div class="press-btn active" onclick="filterFlybox('all',this)">All</div>
-    <div class="press-btn" onclick="filterFlybox('dry',this)">Dry</div>
-    <div class="press-btn" onclick="filterFlybox('emerger',this)">Emerger</div>
-    <div class="press-btn" onclick="filterFlybox('nymph',this)">Nymph</div>
-    <div class="press-btn" onclick="filterFlybox('streamer',this)">Streamer</div>
-    <div class="press-btn" onclick="filterFlybox('wet',this)">Wet</div>
+  <div class="press-row" id="flybox-filter" role="group" aria-label="Filter by fly type" style="margin-bottom:var(--s-300)">
+    <button type="button" class="press-btn active" onclick="filterFlybox('all',this)" aria-pressed="true">All</button>
+    <button type="button" class="press-btn" onclick="filterFlybox('dry',this)" aria-pressed="false">Dry</button>
+    <button type="button" class="press-btn" onclick="filterFlybox('emerger',this)" aria-pressed="false">Emerger</button>
+    <button type="button" class="press-btn" onclick="filterFlybox('nymph',this)" aria-pressed="false">Nymph</button>
+    <button type="button" class="press-btn" onclick="filterFlybox('streamer',this)" aria-pressed="false">Streamer</button>
+    <button type="button" class="press-btn" onclick="filterFlybox('wet',this)" aria-pressed="false">Wet</button>
   </div>
   <div id="flybox-list"></div>
 </section>
@@ -359,7 +359,7 @@
       <div class="log-row"><label for="log-flies">Flies that worked</label><input type="text" id="log-flies" placeholder="DDD #14, Walker's Killer #8"/></div>
       <div class="log-row"><label for="log-failed">Flies that failed</label><input type="text" id="log-failed" placeholder="Woolly Bugger, Adams"/></div>
       <div class="log-row"><label for="log-notes">Session notes</label><textarea id="log-notes" placeholder="Hatch observed, fish behaviour, water conditions"></textarea></div>
-      <div class="log-row"><label>Rating</label><div class="star-row" id="star-row"><span class="star" onclick="setStars(1)">★</span><span class="star" onclick="setStars(2)">★</span><span class="star" onclick="setStars(3)">★</span><span class="star" onclick="setStars(4)">★</span><span class="star" onclick="setStars(5)">★</span><span id="star-label">Tap to rate</span></div></div>
+      <div class="log-row"><span class="field-label" id="rating-label">Rating</span><div class="star-row" id="star-row" role="radiogroup" aria-labelledby="rating-label" onkeydown="starKeys(event)"><button type="button" class="star" role="radio" aria-checked="false" onclick="setStars(1)" aria-label="1 star" tabindex="0">★</button><button type="button" class="star" role="radio" aria-checked="false" onclick="setStars(2)" aria-label="2 stars" tabindex="-1">★</button><button type="button" class="star" role="radio" aria-checked="false" onclick="setStars(3)" aria-label="3 stars" tabindex="-1">★</button><button type="button" class="star" role="radio" aria-checked="false" onclick="setStars(4)" aria-label="4 stars" tabindex="-1">★</button><button type="button" class="star" role="radio" aria-checked="false" onclick="setStars(5)" aria-label="5 stars" tabindex="-1">★</button><span id="star-label" aria-live="polite">Tap to rate</span></div></div>
       <div class="log-actions">
         <button type="button" class="btn btn-forest" onclick="saveEntry()">Save session</button>
         <button type="button" class="btn btn-secondary" onclick="exportCSV()">Export CSV</button>

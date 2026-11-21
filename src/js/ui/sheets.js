@@ -58,7 +58,7 @@ function showToast(msg){
   t.textContent = msg.replace(/!+$/,'').replace(/^\s+/,'');
   t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 2600);
+  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 4000);
 }
 
 // Escape closes the top sheet or modal; with none open it leaves the map's region view

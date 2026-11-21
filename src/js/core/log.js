@@ -192,4 +192,12 @@ function renderStats(){
   document.getElementById('stats-charts').style.display = empty ? 'none' : 'block';
   if (typeof Chart !== 'undefined'){ Chart.defaults.font.family = 'Geist, system-ui, sans-serif'; }
   try { renderStatsBase(); } catch(e) {}
+  if (!empty){
+    var fish = catchEntries.map(function(e){ return e.fish || 0; }), best = Math.max.apply(null, fish);
+    var label = function(id, t){ var c = document.getElementById(id); if (c){ c.setAttribute('role', 'img'); c.setAttribute('aria-label', t); } };
+    label('chart-fish', 'Fish per session for your last ' + Math.min(20, fish.length) + ' sessions. Best session: ' + best + ' fish.');
+    var top = (document.querySelector('#top-flies-list .top-fly-name') || {}).textContent;
+    label('chart-flies', top ? 'Top performing flies. Most used: ' + top + '.' : 'Top performing flies.');
+    label('chart-regions', 'Sessions by region. Best region: ' + document.getElementById('s-best').textContent + '.');
+  }
 }

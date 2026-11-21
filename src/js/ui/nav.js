@@ -16,7 +16,12 @@ function go(id, opts){
   if (id === 'chat') initChat();
   applyPaywalls();
   closeSheets();
-  if (!opts.keepScroll) window.scrollTo(0, 0);
+  if (!opts.keepScroll){
+    window.scrollTo(0, 0);
+    // screen readers: announce the new view by moving focus to its heading
+    var h = document.querySelector('#panel-' + id + ' h1');
+    if (h && !document.querySelector('.sheet.open')){ h.setAttribute('tabindex', '-1'); try { h.focus({ preventScroll: true }); } catch(e) {} }
+  }
   try { history.replaceState(null, '', '#' + id); } catch(e) {}
 }
 

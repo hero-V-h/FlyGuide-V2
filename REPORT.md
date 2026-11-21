@@ -4,7 +4,7 @@
 
 FlyGuide v20 is built. `dist/FlyGuide_v20.html` is one self-contained file at **3.21 MB** (limit 4 MB). The main change is a real satellite map of South Africa built into the file. Everything else from v19 is kept: content, logic, fixes and visual system. The code is now a small vanilla JS project with a one-command build.
 
-- **Tests:** 33 Playwright tests pass at 390×844 and 1440×900. The other 5 are skipped on purpose because they apply to one viewport only (mouse wheel, double click and budget on desktop; pinch and the 390 px overflow check on phone).
+- **Tests:** 43 Playwright tests pass at 390×844 and 1440×900. The other 5 are skipped on purpose because they apply to one viewport only (mouse wheel, double click and budget on desktop; pinch and the 390 px overflow check on phone).
 - **Screenshots:** 45 screens in `dist/screenshots/`, both sizes.
 
 ```
@@ -32,7 +32,7 @@ npm run check-v19   # confirms src/data still matches v19 and lists logic that d
 
 Logic is otherwise unchanged. The extractor (`scripts/extract-v19.mjs`) parses both v19 scripts with acorn and evaluates each data declaration in a Node VM. It serialises the values to `src/data/*.js`: `scoreRules` moves as source text and the hero photos as their exact bytes. It then evaluates the output again and compares it with v19.
 
-`npm run check-v19` confirms the data matches, and checks 62 v19 functions copied into `src/js`: 60 are identical apart from whitespace, and two differ on purpose: `renderStatsBase` (brand colours and the flex empty state) and `showPlanScreen` (focus).
+`npm run check-v19` confirms the data matches, and checks 62 v19 functions copied into `src/js`: 59 are identical apart from whitespace, and three differ on purpose: `renderStatsBase` (brand colours and the flex empty state), `showPlanScreen` (focus) and `buildKnowledge` (runs the readability safety net).
 
 The counts checked are:
 - Flies: Dullstroom 27, KZN 20, Eastern Cape 19, Cape 17.
@@ -158,7 +158,7 @@ The KZN region marker moved from (29.65, −29.35) to (29.80, −29.30) so it cl
 
 ## Tests (Playwright, Chromium 390×844 and 1440×900, external network blocked)
 
-`npx playwright test` reports **33 passed and 5 skipped**. The skips are tests that only apply to one viewport.
+`npx playwright test` reports **43 passed and 5 skipped**. The skips are tests that only apply to one viewport.
 
 1. **No page errors:** an auto fixture fails any test with a page error or console error.
 2. **Sandbox:** the built file loads through `srcdoc` into `<iframe sandbox="allow-scripts">`, and the storage shim is confirmed active. The flow:
@@ -188,6 +188,30 @@ The KZN region marker moved from (29.65, −29.35) to (29.80, −29.30) so it cl
 9. **Layout:** no horizontal overflow at 390 px on any of the 10 panels.
 10. **Budget:** the HTML and imagery limits hold. The only external sources are Google Fonts, cdnjs and the credit link, and there is no `<form>`.
 11. **Screenshots:** every screen in the brief at both sizes. 45 files in `dist/screenshots/`; each was looked at, and the issues found were fixed.
+
+## UI/UX Pro Max pass
+
+After the first build, the app was audited against the UI/UX Pro Max rule set (`ui-ux-pro-max` skill, priorities 1 to 9). The audit measured every panel, sheet and modal at phone, desktop and landscape (844×390) sizes. The brief's design system stayed as it was. Fixes:
+
+| Rule | Before | After |
+|---|---|---|
+| Text contrast 4.5:1 | 9 failures: inactive tab labels 3.3:1, the "or" divider 3.0:1, the map footnote 4.45:1, locked plan features 3.4:1, unlit rating stars 1.7:1, three Learn species headers down to 2.8:1 | 0 failures, enforced by a test on every panel |
+| Minimum text size | One 9 px label in Learn | 12 px minimum |
+| Touch targets ≥44 px | Sign-in tabs, region pill, avatar, segmented controls, Learn tabs, chat suggestions, Delete session, rating stars, logo link were 32 to 40 px | All 44 px. Compact visuals (small buttons, breadcrumb, map pins, credits button) keep their look and get an invisible 44 px hit area, checked by probing points just outside each control |
+| Keyboard access | Fly box filters and rating stars were `div`/`span` with click handlers only | Real buttons. The stars are a radio group with arrow keys |
+| State for screen readers | Pressure, auth tabs, plan cards, billing toggle, filters and Learn tabs showed state by colour only | `aria-checked`, `aria-selected` and `aria-pressed` follow the visual state automatically |
+| Colour not the only signal | Season strip months and locked plan features used colour only | Each month reads its rating ("March: prime"); locked features read "Not included" and show a dash icon |
+| Decorative icons | 34 sprite icons in the static markup were exposed to screen readers | Hidden (`aria-hidden`, `focusable="false"`) |
+| Focus | Focus could leave open sheets and modals, sticky bars could cover focused fields, and new views weren't announced | Focus stays inside open dialogs, scroll padding clears the top and tab bars, and changing view moves focus to the new heading |
+| Password fields | No reveal option | Show/Hide toggle with `aria-pressed` |
+| Charts | No text alternative | Each chart has a one-line summary for screen readers |
+| Feedback timing | Toast closed after 2.6 s | 4 s |
+| Numbers | Proportional figures in stats and tables | Tabular figures |
+| Tap delay | Default | `touch-action: manipulation` on controls |
+
+v19's Learn content is still word for word. Its few colour and size problems are fixed at render time by a safety net (`ensureReadable` in `src/js/core/a11y.js`). The safety net darkens a coloured band behind light text until it passes AA, and raises text under 12 px. Text hidden on purpose (size 0 or `aria-hidden`) is skipped.
+
+New tests in `tests/a11y.spec.ts`: ARIA state sync, the star radio group, the password toggle, the focus trap, focus moving to the new heading, and an AA contrast sweep over all ten panels.
 
 ## Known limitations (carried over)
 

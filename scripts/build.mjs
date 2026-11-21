@@ -58,7 +58,7 @@ const ORDER = [
   'src/data/config.js', 'src/data/regions.js', 'src/data/rigs.js', 'src/data/weather.js', 'src/data/chat.js',
   'src/data/wiki.js', 'src/data/legal.js', 'src/data/notifications.js', 'src/data/knowledge.js', 'src/data/geo.js',
   '@hero', '@map',
-  'src/js/core/state.js', 'src/js/core/images.js', 'src/js/core/scoring.js', 'src/js/core/weather.js', 'src/js/core/tools.js',
+  'src/js/core/state.js', 'src/js/core/a11y.js', 'src/js/core/images.js', 'src/js/core/scoring.js', 'src/js/core/weather.js', 'src/js/core/tools.js',
   'src/js/core/log.js', 'src/js/core/auth.js', 'src/js/core/chat.js', 'src/js/core/knowledge.js',
   'src/js/ui/sheets.js', 'src/js/ui/nav.js', 'src/js/ui/hero.js', 'src/js/ui/map.js', 'src/js/ui/init.js'
 ];
@@ -92,6 +92,8 @@ const put = (marker, content) => {
 put('<!--BUILD:head-scripts-->', headScripts);
 put('<!--BUILD:styles-->', css.trim());
 put('<!--BUILD:icons-->', sprite());
+// Decorative icons beside visible text are hidden from screen readers
+html = html.replace(/<svg>(<use href="#i-[a-z]+"\/>)<\/svg>/g, '<svg aria-hidden="true" focusable="false">$1</svg>');
 put('<!--BUILD:app-script-->', '<script>' + safeScript(appOut) + '</script>');
 
 fs.mkdirSync(path.dirname(OUT), { recursive: true });

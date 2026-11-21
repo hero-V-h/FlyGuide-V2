@@ -15,6 +15,7 @@ function buildKnowledge(){
     }
     if (b.classList.contains('open')) b.parentNode.classList.add('is-open');
   });
+  try { ensureReadable(el); } catch(e) {}
 }
 
 function toggleKnow(head){
