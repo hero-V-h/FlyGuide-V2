@@ -244,6 +244,17 @@ Verification:
 - Dark-theme screenshots (prefixed `-dark-`) sit beside the light ones in `dist/screenshots/`.
 - On phones, region tags got smaller padding, and a collision nudge keeps any two from overlapping at any width.
 
+### Decluttering pass
+
+After the redesign, the layout was simplified on request:
+- **One texture:** contour lines appear only on the page background. They were removed from page headers, the Explore caption, the sign-in card, venue details, empty states and fly placeholders.
+- **Fewer boxes:** page headers and the Explore caption sit directly on the page. Card shadows and most dashed dividers are gone. Cards have more inner space, and sections have more space between them.
+- **Fewer type voices:** condensed caps are kept for page and section titles, buttons and the map tags. Card, list and table titles use mixed case. Form labels, stat labels, badges and secondary lines use plain text. The monospace font is kept for figures and page labels.
+- **Explore:** a shorter label above the title, no duplicate header button, and one action in the caption. The region figures sit under a single rule instead of in three boxes.
+- **Map:** the gesture hint fades once the map has been dragged, pinched or zoomed. The credits chip is smaller and follows the theme.
+- **Top bar:** the plan chip shows only when it tells you something (trial days left, trial expired, free plan).
+- **Layout fixes:** the fly cards' dealt-in rotation is clipped, so it can't widen the page. On phones the longest page title steps down to 34 px.
+
 ## Known limitations (carried over)
 
 - Accounts are stored in each browser (`fg_users`, base64 passwords). This is a demo, not secure auth; v19's notes on moving to Supabase are kept in the code.

@@ -285,6 +285,8 @@ function updateAppForUser(){
     else if (currentUser.plan === 'pro_m' || currentUser.plan === 'pro_y'){ chip.textContent = 'Pro'; chip.style.background = 'var(--forest-tint)'; chip.style.color = 'var(--forest)'; }
     else { chip.textContent = 'Free plan'; chip.style.background = 'var(--surface-3)'; chip.style.color = 'var(--ink-3)'; }
   }
+  // Owner and paid plans need no reminder in the top bar; the account sheet shows the plan
+  chip.classList.toggle('quiet', !currentUser || !!currentUser.guest || chip.textContent === 'Owner' || chip.textContent === 'Pro');
   applyPaywalls();
   if (!canUseRegion(currentRegion)) setRegion('dullstroom', {silent:true});
 }

@@ -338,6 +338,9 @@ function bindMapGestures(){
   // The stage clips its content; never let focus scroll it sideways (v19 bug)
   st.addEventListener('scroll', function(){ if (st.scrollLeft || st.scrollTop){ st.scrollLeft = 0; st.scrollTop = 0; } });
   function ids(){ return Object.keys(MAP.pointers); }
+  // the gesture hint has done its job once someone drags, pinches or zooms
+  var hintDone = function(){ document.getElementById('map-stage').classList.add('used'); };
+  ['pointerdown', 'wheel'].forEach(function(t){ st.addEventListener(t, function(e){ if (t === 'wheel' && !(e.ctrlKey || e.metaKey)) return; if (!e.target.closest('button,a')) hintDone(); }, { passive: true }); });
   st.addEventListener('pointerdown', function(e){
     if (e.target.closest('button,a')) return;
     if (ids().length >= 2) return;                      // ignore extra touches mid gesture
