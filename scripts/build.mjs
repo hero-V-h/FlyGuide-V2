@@ -97,6 +97,21 @@ put('<!--BUILD:app-script-->', '<script>' + safeScript(appOut) + '</script>');
 fs.mkdirSync(path.dirname(OUT), { recursive: true });
 fs.writeFileSync(OUT, html);
 
+// claude.ai artifact variant: the platform wraps the page in its own document
+// skeleton (doctype, html, head, body and a viewport meta with viewport-fit=cover),
+// so this copy leaves those out and names the page by the product.
+const ART = r('dist/FlyGuide_v20.artifact.html');
+let art = html
+  .replace(/^<!DOCTYPE html>\s*/i, '')
+  .replace(/<html[^>]*>\s*/i, '').replace(/<\/html>\s*$/i, '')
+  .replace(/<head>\s*/i, '').replace(/<\/head>\s*/i, '')
+  .replace(/<body>\s*/i, '').replace(/<\/body>\s*/i, '')
+  .replace(/<meta charset="UTF-8"\/>\s*/i, '')
+  .replace(/<meta name="viewport"[^>]*>\s*/i, '')
+  .replace(/<title>[^<]*<\/title>/i, '<title>FlyGuide</title>\n<script>document.documentElement.lang="en-ZA"</script>');
+for (const t of ['<html', '<head>', '<body', 'name="viewport"']) if (art.toLowerCase().includes(t.toLowerCase())) throw new Error('Artifact variant still contains ' + t);
+fs.writeFileSync(ART, art);
+
 // ── Budget ──
 const size = Buffer.byteLength(html);
 const imagery = manifest.images.reduce((a, i) => a + i.bytes, 0);

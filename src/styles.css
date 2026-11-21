@@ -112,7 +112,7 @@ em,i{font-style:normal}
 .dot-badge{position:absolute;top:10px;right:10px;width:8px;height:8px;border-radius:var(--r-full);background:var(--rust);box-shadow:0 0 0 2px var(--surface);display:none}
 
 /* ── Floating top bar ── */
-.topbar{position:fixed;top:var(--s-100);left:50%;transform:translateX(-50%);z-index:600;width:min(calc(100% - var(--s-300)),var(--content));height:var(--nav-h);display:flex;align-items:center;gap:var(--s-100);padding:0 var(--s-75) 0 var(--s-200);background:rgb(255 255 255 / .82);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border:1px solid rgb(227 222 211 / .9);border-radius:var(--r-2xl);box-shadow:var(--sh-2)}
+.topbar{position:fixed;top:calc(var(--s-100) + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:600;width:min(calc(100% - var(--s-300)),var(--content));height:var(--nav-h);display:flex;align-items:center;gap:var(--s-100);padding:0 var(--s-75) 0 var(--s-200);background:rgb(255 255 255 / .82);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border:1px solid rgb(227 222 211 / .9);border-radius:var(--r-2xl);box-shadow:var(--sh-2)}
 .brand{text-decoration:none;display:flex;align-items:center;gap:var(--s-75);font-size:18px;line-height:28px;font-weight:600;letter-spacing:-0.01em;color:var(--ink);flex-shrink:0}
 .brand-mark{width:32px;height:32px;border-radius:var(--r-lg);background:var(--forest);display:grid;place-items:center;color:#fff}
 .brand-mark svg{width:20px;height:20px}

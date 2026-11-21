@@ -1,10 +1,10 @@
 {
   "file": "dist/FlyGuide_v20.html",
-  "htmlBytes": 3362884,
+  "htmlBytes": 3362921,
   "mapImageryRawBytes": 1903678,
   "heroPhotoRawBytes": 312146,
   "scriptBytes": 3244030,
-  "cssBytes": 65184,
+  "cssBytes": 65221,
   "limits": {
     "htmlBytes": 4194304,
     "mapImageryRawBytes": 2621440
