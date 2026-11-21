@@ -17,7 +17,8 @@ function go(id, opts){
   applyPaywalls();
   closeSheets();
   if (!opts.keepScroll){
-    window.scrollTo(0, 0);
+    // a new view starts at its top at once (no smooth scroll from the previous page)
+    try { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); } catch(e) { window.scrollTo(0, 0); }
     // screen readers: announce the new view by moving focus to its heading
     var h = document.querySelector('#panel-' + id + ' h1');
     if (h && !document.querySelector('.sheet.open')){ h.setAttribute('tabindex', '-1'); try { h.focus({ preventScroll: true }); } catch(e) {} }

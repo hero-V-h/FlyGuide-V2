@@ -2,8 +2,8 @@
    FlyGuide v20 · Field journal
    Layout: map-first explore page; journal pages of paper cards; topo
    contours as the one recurring texture.
-   Palette: Highveld earth (olive, grassland gold, sandstone, rust), with
-   a slate water tone. Light and dark, following the system, with a
+   Palette: Highveld earth, refined: loden green, burnished brass, oxblood,
+   bone paper and a deep slate water tone. Light and dark, following the system, with a
    data-theme override.
    Type: Archivo condensed (display, signage) + Archivo (text) + IBM Plex
    Mono (figures and field-note labels).
@@ -17,19 +17,20 @@
   --s-400:32px;--s-500:40px;--s-600:48px;--s-700:64px;--s-800:80px;--s-900:96px;
   --r-sm:4px;--r-md:6px;--r-lg:8px;--r-xl:10px;--r-2xl:12px;--r-3xl:14px;--r-full:9999px;
 
-  /* Paper and ink */
-  --bg:#ECE7D8;--surface:#F7F4EA;--surface-2:#F1EDE1;--surface-3:#E3DDCB;
-  --border:#D4CCB5;--border-strong:#B5AB8F;
-  --ink:#1C1F14;--ink-2:#383C2A;--ink-3:#565A45;--ink-4:#7E7F68;
-  /* Highveld earth */
-  --olive:#4A5527;--olive-2:#3A4320;--olive-tint:#E2E4CC;--on-olive:#F7F4EA;
-  --gold:#D6A13C;--gold-2:#C48F2C;--gold-tint:#F3E5C0;--gold-ink:#6B4F0E;--on-gold:#1C1F14;
-  --rust:#9E3D1B;--rust-tint:#F2DDD1;
-  --slate:#3B585E;--slate-tint:#DCE5E3;
-  --season-good:#8D9B5C;
-  --contour-ink:rgb(74 85 39 / .16);
-  --plate:#F4F0E4;   /* diagrams stay on a printed plate in both themes */
-  --scrim:rgb(20 21 14 / .52);
+  /* Paper and ink: bone and ivory, near-black olive ink */
+  --bg:#EAE5DA;--surface:#F7F4EE;--surface-2:#F1EDE4;--surface-3:#E4DDD0;
+  --border:#D7CFBF;--border-strong:#B7AC97;
+  --ink:#191A14;--ink-2:#33352B;--ink-3:#54564A;--ink-4:#858574;
+  /* Highveld earth, refined: loden, burnished brass, oxblood, deep slate */
+  --olive:#3E4A33;--olive-2:#2F3926;--olive-tint:#E2E5D8;--on-olive:#F7F4EE;
+  --gold:#B08D57;--gold-2:#9C7A47;--gold-tint:#EEE5D2;--gold-ink:#6B5129;--on-gold:#191A14;
+  --rust:#7A2E22;--rust-tint:#F0DFDA;
+  --slate:#2F4D52;--slate-tint:#DCE4E2;
+  --season-good:#8A9473;
+  --contour-ink:rgb(62 74 51 / .14);
+  --topo-ink:rgb(62 74 51 / .11);
+  --plate:#F5F1E8;   /* diagrams stay on a printed plate in both themes */
+  --scrim:rgb(18 19 15 / .55);
 
   /* Aliases kept for v19 content and inline styles */
   --forest:var(--olive);--forest-2:var(--olive-2);--forest-tint:var(--olive-tint);
@@ -52,16 +53,17 @@
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#14150E;--surface:#1D1F15;--surface-2:#222419;--surface-3:#2C2F21;
-    --border:#383B2A;--border-strong:#4F533B;
-    --ink:#EEE8D4;--ink-2:#D3CCB5;--ink-3:#ADA78F;--ink-4:#7E7B68;
-    --olive:#AEBC77;--olive-2:#C2CE8E;--olive-tint:#2A2F1A;--on-olive:#14150E;
-    --gold:#E2B24F;--gold-2:#EEC266;--gold-tint:#3A3019;--gold-ink:#E2B24F;--on-gold:#14150E;
-    --rust:#E58560;--rust-tint:#3A231A;
-    --slate:#93B6B9;--slate-tint:#1E2A2B;
-    --season-good:#6F7C45;
-    --contour-ink:rgb(174 188 119 / .11);
-    --scrim:rgb(6 7 4 / .62);
+    --bg:#121310;--surface:#1B1C17;--surface-2:#20211B;--surface-3:#2A2B23;
+    --border:#36372D;--border-strong:#4C4D40;
+    --ink:#ECE6D8;--ink-2:#D0C9B8;--ink-3:#A9A392;--ink-4:#7C7969;
+    --olive:#A9B48F;--olive-2:#BCC6A3;--olive-tint:#272C20;--on-olive:#121310;
+    --gold:#C9A46A;--gold-2:#D8B67F;--gold-tint:#352C1E;--gold-ink:#D4B07A;--on-gold:#121310;
+    --rust:#D98C78;--rust-tint:#3A221D;
+    --slate:#9DB9BB;--slate-tint:#1C2828;
+    --season-good:#6C7458;
+    --contour-ink:rgb(169 180 143 / .10);
+    --topo-ink:rgb(169 180 143 / .075);
+    --scrim:rgb(5 5 4 / .64);
     --sh-1:0 1px 0 rgb(0 0 0 / .3);
     --sh-2:0 1px 2px rgb(0 0 0 / .3),0 10px 28px rgb(0 0 0 / .35);
     --sh-3:0 18px 56px rgb(0 0 0 / .55);
@@ -69,26 +71,29 @@
   }
 }
 :root[data-theme="dark"]{
-  --bg:#14150E;--surface:#1D1F15;--surface-2:#222419;--surface-3:#2C2F21;
-  --border:#383B2A;--border-strong:#4F533B;
-  --ink:#EEE8D4;--ink-2:#D3CCB5;--ink-3:#ADA78F;--ink-4:#7E7B68;
-  --olive:#AEBC77;--olive-2:#C2CE8E;--olive-tint:#2A2F1A;--on-olive:#14150E;
-  --gold:#E2B24F;--gold-2:#EEC266;--gold-tint:#3A3019;--gold-ink:#E2B24F;--on-gold:#14150E;
-  --rust:#E58560;--rust-tint:#3A231A;
-  --slate:#93B6B9;--slate-tint:#1E2A2B;
-  --season-good:#6F7C45;
-  --contour-ink:rgb(174 188 119 / .11);
-  --scrim:rgb(6 7 4 / .62);
-  --sh-1:0 1px 0 rgb(0 0 0 / .3);
-  --sh-2:0 1px 2px rgb(0 0 0 / .3),0 10px 28px rgb(0 0 0 / .35);
-  --sh-3:0 18px 56px rgb(0 0 0 / .55);
-  color-scheme:dark;
+    --bg:#121310;--surface:#1B1C17;--surface-2:#20211B;--surface-3:#2A2B23;
+    --border:#36372D;--border-strong:#4C4D40;
+    --ink:#ECE6D8;--ink-2:#D0C9B8;--ink-3:#A9A392;--ink-4:#7C7969;
+    --olive:#A9B48F;--olive-2:#BCC6A3;--olive-tint:#272C20;--on-olive:#121310;
+    --gold:#C9A46A;--gold-2:#D8B67F;--gold-tint:#352C1E;--gold-ink:#D4B07A;--on-gold:#121310;
+    --rust:#D98C78;--rust-tint:#3A221D;
+    --slate:#9DB9BB;--slate-tint:#1C2828;
+    --season-good:#6C7458;
+    --contour-ink:rgb(169 180 143 / .10);
+    --topo-ink:rgb(169 180 143 / .075);
+    --scrim:rgb(5 5 4 / .64);
+    --sh-1:0 1px 0 rgb(0 0 0 / .3);
+    --sh-2:0 1px 2px rgb(0 0 0 / .3),0 10px 28px rgb(0 0 0 / .35);
+    --sh-3:0 18px 56px rgb(0 0 0 / .55);
+    color-scheme:dark;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + var(--s-400));scroll-padding-bottom:calc(var(--tab-h) + var(--s-300) + env(safe-area-inset-bottom,0px))}
 html,body{overflow-x:hidden}
 body{font-family:var(--font);background:var(--bg);color:var(--ink);font-size:16px;line-height:24px;-webkit-font-smoothing:antialiased;min-height:100vh}
+/* The whole page sits on a faint topographic sheet (fixed, so it never repaints on scroll) */
+body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:var(--topo-ink);-webkit-mask:var(--topo) center/cover no-repeat;mask:var(--topo) center/cover no-repeat}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer;background:none;border:0}
 button,a,[role="button"],[role="radio"],select,label{touch-action:manipulation}
@@ -299,7 +304,7 @@ textarea{min-height:96px;resize:vertical}
 /* Region markers: a stamped pin and a paper luggage tag */
 .mk-region .mk-btn{position:relative;display:grid;place-items:center;width:44px;height:44px;border-radius:var(--r-full);transition:transform 160ms var(--ease-out)}
 .mk-region .mk-btn:active{transform:scale(0.94)}
-.mk-pin{width:26px;height:26px;border-radius:var(--r-full);background:var(--rust);display:grid;place-items:center;box-shadow:0 0 0 3px #F7F4EA,0 0 0 4px rgb(0 0 0 / .3),0 4px 12px rgb(0 0 0 / .5);flex-shrink:0}
+.mk-pin{width:26px;height:26px;border-radius:var(--r-full);background:var(--rust);display:grid;place-items:center;box-shadow:0 0 0 3px #F7F4EE,0 0 0 4px rgb(0 0 0 / .3),0 4px 12px rgb(0 0 0 / .5);flex-shrink:0}
 .mk-pin svg{width:14px;height:14px;color:#fff}
 .mk-text{position:absolute;display:flex;flex-direction:column;white-space:nowrap;padding:var(--s-50) var(--s-100) var(--s-50) var(--s-300);border-radius:var(--r-sm) var(--r-md) var(--r-md) var(--r-sm);background:var(--surface);color:var(--ink);border:1px solid var(--border-strong);box-shadow:0 6px 18px rgb(0 0 0 / .38);transition:border-color 200ms ease,background-color 200ms ease;text-align:left;pointer-events:none}
 /* tag eyelet */
@@ -315,10 +320,10 @@ textarea{min-height:96px;resize:vertical}
 @media (hover:hover) and (pointer:fine){.mk-region .mk-btn:hover .mk-text{background:var(--surface-2)}}
 
 /* Venue pins: numbered paper discs, selected one turns gold */
-.mk-venue .v-btn{position:relative;width:36px;height:36px;border-radius:var(--r-full);display:grid;place-items:center;background:#F7F4EA;color:#1C1F14;font-family:var(--mono);font-size:14px;line-height:20px;font-weight:600;box-shadow:0 0 0 2px #4A5527,0 0 0 4px rgb(247 244 234 / .55),0 6px 16px rgb(0 0 0 / .5);transition:transform 160ms var(--ease-out),background-color 200ms ease,color 200ms ease}
+.mk-venue .v-btn{position:relative;width:36px;height:36px;border-radius:var(--r-full);display:grid;place-items:center;background:#F7F4EE;color:#191A14;font-family:var(--mono);font-size:14px;line-height:20px;font-weight:600;box-shadow:0 0 0 2px #3E4A33,0 0 0 4px rgb(247 244 238 / .55),0 6px 16px rgb(0 0 0 / .5);transition:transform 160ms var(--ease-out),background-color 200ms ease,color 200ms ease}
 .mk-venue .v-btn::after{content:'';position:absolute;inset:-4px;border-radius:var(--r-full)}
 .mk-venue .v-btn:active{transform:scale(0.94)}
-.mk-venue.sel .v-btn{background:#D6A13C;color:#1C1F14;box-shadow:0 0 0 2px #1C1F14,0 0 0 4px rgb(214 161 60 / .5),0 6px 16px rgb(0 0 0 / .5)}
+.mk-venue.sel .v-btn{background:#C9A46A;color:#191A14;box-shadow:0 0 0 2px #191A14,0 0 0 4px rgb(201 164 106 / .5),0 6px 16px rgb(0 0 0 / .5)}
 .mk-venue.sel{z-index:2}
 .mk-venue .v-label{position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);white-space:nowrap;font-size:12px;line-height:16px;font-weight:700;font-stretch:85%;letter-spacing:.02em;color:var(--ink);padding:var(--s-25) var(--s-75);border-radius:var(--r-sm);background:var(--surface);border:1px solid var(--border-strong);pointer-events:none}
 .mk-venue.lbl-up .v-label{top:auto;bottom:calc(100% + 8px)}
@@ -506,24 +511,24 @@ textarea{min-height:96px;resize:vertical}
 @keyframes skel{to{background-position:-200% 0}}
 .spinner{display:none}
 .weather-error{background:var(--rust-tint);color:var(--ink);border:1px solid var(--rust);border-radius:var(--r-lg);padding:var(--s-100) var(--s-200);font-size:14px;line-height:20px;margin-bottom:var(--s-200)}
-.weather-card{background:var(--slate);color:#F7F4EA;border-radius:var(--r-2xl);overflow:hidden;margin-bottom:var(--s-200);box-shadow:var(--sh-2)}
-:root[data-theme="dark"] .weather-card{background:#2E4448}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .weather-card{background:#2E4448}}
+.weather-card{background:var(--slate);color:#F7F4EE;border-radius:var(--r-2xl);overflow:hidden;margin-bottom:var(--s-200);box-shadow:var(--sh-2)}
+:root[data-theme="dark"] .weather-card{background:#24393C}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .weather-card{background:#24393C}}
 .weather-card-inner{padding:var(--s-200) var(--s-300);display:flex;align-items:flex-start;gap:var(--s-200);flex-wrap:wrap}
 .weather-main{flex:1;min-width:200px}
-.weather-location{font-family:var(--mono);font-size:12px;line-height:16px;letter-spacing:.06em;text-transform:uppercase;color:rgb(247 244 234 / .86)}
+.weather-location{font-family:var(--mono);font-size:12px;line-height:16px;letter-spacing:.06em;text-transform:uppercase;color:rgb(247 244 238 / .86)}
 .weather-temp{font-family:var(--mono);font-size:40px;line-height:44px;font-weight:600;margin:var(--s-50) 0}
-.weather-desc{font-size:14px;line-height:20px;color:rgb(247 244 234 / .88);margin-bottom:var(--s-100)}
+.weather-desc{font-size:14px;line-height:20px;color:rgb(247 244 238 / .88);margin-bottom:var(--s-100)}
 .weather-stats{display:flex;flex-wrap:wrap;gap:var(--s-200)}
-.weather-stat{font-size:12px;line-height:16px;color:rgb(247 244 234 / .82)}
-.weather-stat strong{display:block;font-family:var(--mono);font-size:14px;line-height:20px;font-weight:600;color:#F7F4EA}
+.weather-stat{font-size:12px;line-height:16px;color:rgb(247 244 238 / .82)}
+.weather-stat strong{display:block;font-family:var(--mono);font-size:14px;line-height:20px;font-weight:600;color:#F7F4EE}
 .weather-icon{display:none}
-.weather-btn{position:relative;background:rgb(247 244 234 / .14);color:#F7F4EA;border:1px solid rgb(247 244 234 / .34);border-radius:var(--r-md);padding:var(--s-75) var(--s-100);min-height:36px;font-size:14px;line-height:20px;font-weight:700;transition:background-color 200ms ease,transform 160ms var(--ease-out)}
+.weather-btn{position:relative;background:rgb(247 244 238 / .14);color:#F7F4EE;border:1px solid rgb(247 244 238 / .34);border-radius:var(--r-md);padding:var(--s-75) var(--s-100);min-height:36px;font-size:14px;line-height:20px;font-weight:700;transition:background-color 200ms ease,transform 160ms var(--ease-out)}
 .weather-btn::after,.apply-btn::after{content:'';position:absolute;inset:-4px 0}
 .weather-btn:active{transform:scale(0.97)}
-.weather-autofill{background:rgb(0 0 0 / .2);padding:var(--s-100) var(--s-300);font-size:14px;line-height:20px;color:#F7F4EA;display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-75) var(--s-100)}
+.weather-autofill{background:rgb(0 0 0 / .2);padding:var(--s-100) var(--s-300);font-size:14px;line-height:20px;color:#F7F4EE;display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-75) var(--s-100)}
 .weather-autofill strong{font-weight:700}
-.apply-btn{position:relative;margin-left:auto;background:#F7F4EA;color:#1C1F14;border-radius:var(--r-md);padding:var(--s-75) var(--s-100);min-height:36px;font-size:14px;line-height:20px;font-weight:700;transition:transform 160ms var(--ease-out)}
+.apply-btn{position:relative;margin-left:auto;background:#F7F4EE;color:#191A14;border-radius:var(--r-md);padding:var(--s-75) var(--s-100);min-height:36px;font-size:14px;line-height:20px;font-weight:700;transition:transform 160ms var(--ease-out)}
 .apply-btn:active{transform:scale(0.97)}
 
 /* Rig / tippet result */

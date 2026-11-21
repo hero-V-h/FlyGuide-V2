@@ -79,7 +79,8 @@ for (const name of ['go', 'mapRegion', 'selectVenue', 'handleLogin', 'handleSign
 }
 const shim = (await esbuild.transform(read('src/js/storage-shim.js'), { loader: 'js', target: 'es2019', minify: !DEV })).code;
 // Topographic contour texture, generated (see scripts/contours.mjs) and used as a CSS mask
-const contourCss = ':root{--contours:url("' + contourDataUri({ seed: 11 }) + '")}\n';
+// --topo is a larger sheet for the page background, so lines stay fine on wide screens
+const contourCss = ':root{--contours:url("' + contourDataUri({ seed: 11 }) + '");--topo:url("' + contourDataUri({ w: 1600, h: 1000, seed: 23, nx: 120, ny: 76, count: 30, hillCount: 28 }) + '")}\n';
 const css = (await esbuild.transform(contourCss + read('src/styles.css'), { loader: 'css', minify: !DEV, target: ['chrome100', 'safari15', 'firefox100'] })).code;
 
 const safeScript = (s) => s.replace(/<\/script/gi, '<\\/script').replace(/<!--/g, '<\\!--');

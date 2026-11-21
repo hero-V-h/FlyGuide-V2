@@ -6,9 +6,9 @@
 
 function rng(seed) { let s = seed >>> 0; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
 
-export function contourSvg({ w = 960, h = 600, seed = 7, nx = 80, ny = 50, count = 18 } = {}) {
+export function contourSvg({ w = 960, h = 600, seed = 7, nx = 80, ny = 50, count = 18, hillCount = 16 } = {}) {
   const R = rng(seed);
-  const hills = Array.from({ length: 16 }, () => ({ x: R() * w, y: R() * h, s: 60 + R() * 220, a: (R() < 0.75 ? 1 : -0.6) * (0.5 + R()) }));
+  const hills = Array.from({ length: hillCount }, () => ({ x: R() * w, y: R() * h, s: 60 + R() * 220, a: (R() < 0.75 ? 1 : -0.6) * (0.5 + R()) }));
   const field = (x, y) => hills.reduce((v, k) => v + k.a * Math.exp(-((x - k.x) ** 2 + (y - k.y) ** 2) / (2 * k.s * k.s)), 0) + 0.15 * Math.sin(x / 170) * Math.cos(y / 130);
   const gx = w / (nx - 1), gy = h / (ny - 1), G = [];
   let lo = Infinity, hi = -Infinity;
