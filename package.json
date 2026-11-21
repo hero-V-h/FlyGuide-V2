@@ -1,0 +1,23 @@
+{
+  "name": "flyguide",
+  "version": "20.0.0",
+  "private": true,
+  "description": "FlyGuide v20, a South African fly fishing guide built as one self-contained HTML file.",
+  "type": "module",
+  "scripts": {
+    "extract": "node scripts/extract-v19.mjs",
+    "check-v19": "node scripts/extract-v19.mjs --check",
+    "fetch-map": "NODE_USE_ENV_PROXY=1 node scripts/fetch-map-data.mjs",
+    "build": "node scripts/build.mjs",
+    "test": "playwright test --trace off"
+  },
+  "devDependencies": {
+    "@phosphor-icons/core": "^2.1.1",
+    "@playwright/test": "^1.63.0",
+    "acorn": "^8.19.0",
+    "esbuild": "^0.24.2",
+    "sharp": "^0.33.5",
+    "topojson-client": "^3.1.0",
+    "world-atlas": "^2.0.2"
+  }
+}

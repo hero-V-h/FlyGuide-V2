@@ -1,0 +1,165 @@
+{
+  "source": "EOxCloudless 2016 (Sentinel-2 cloudless, layer s2cloudless_3857), CC BY 4.0",
+  "attribution": "EOxCloudless https://cloudless.eox.at by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2016 & 2017)",
+  "bordersAttribution": "Borders and coastline: Natural Earth",
+  "projection": "Web Mercator; bounds in normalised world units 0..1",
+  "quality": 80,
+  "generated": "2026-11-21T10:47:54.827Z",
+  "images": [
+    {
+      "id": "country",
+      "region": null,
+      "z": 7,
+      "file": "country.webp",
+      "bounds": {
+        "x0": 0.54302978515625,
+        "y0": 0.55084228515625,
+        "x1": 0.59307861328125,
+        "y1": 0.614288330078125
+      },
+      "px": {
+        "w": 1640,
+        "h": 2079
+      },
+      "bytes": 344454
+    },
+    {
+      "id": "dullstroom-context",
+      "region": "dullstroom",
+      "z": 9,
+      "file": "dullstroom-context.webp",
+      "bounds": {
+        "x0": 0.57916259765625,
+        "y0": 0.5681533813476562,
+        "x1": 0.5880584716796875,
+        "y1": 0.5780105590820312
+      },
+      "px": {
+        "w": 1166,
+        "h": 1292
+      },
+      "bytes": 195408
+    },
+    {
+      "id": "dullstroom-detail",
+      "region": "dullstroom",
+      "z": 11,
+      "file": "dullstroom-detail.webp",
+      "bounds": {
+        "x0": 0.5830078125,
+        "y0": 0.5712776184082031,
+        "x1": 0.5850257873535156,
+        "y1": 0.5743370056152344
+      },
+      "px": {
+        "w": 1058,
+        "h": 1604
+      },
+      "bytes": 166880
+    },
+    {
+      "id": "kzn-context",
+      "region": "kzn",
+      "z": 9,
+      "file": "kzn-context.webp",
+      "bounds": {
+        "x0": 0.5783309936523438,
+        "y0": 0.5801239013671875,
+        "x1": 0.5872268676757812,
+        "y1": 0.59033203125
+      },
+      "px": {
+        "w": 1166,
+        "h": 1338
+      },
+      "bytes": 170320
+    },
+    {
+      "id": "kzn-detail",
+      "region": "kzn",
+      "z": 11,
+      "file": "kzn-detail.webp",
+      "bounds": {
+        "x0": 0.5815105438232422,
+        "y0": 0.5837879180908203,
+        "x1": 0.583740234375,
+        "y1": 0.5872402191162109
+      },
+      "px": {
+        "w": 1169,
+        "h": 1810
+      },
+      "bytes": 204978
+    },
+    {
+      "id": "ec-context",
+      "region": "ec",
+      "z": 9,
+      "file": "ec-context.webp",
+      "bounds": {
+        "x0": 0.5727767944335938,
+        "y0": 0.58502197265625,
+        "x1": 0.5816726684570312,
+        "y1": 0.5953903198242188
+      },
+      "px": {
+        "w": 1166,
+        "h": 1359
+      },
+      "bytes": 216444
+    },
+    {
+      "id": "ec-detail",
+      "region": "ec",
+      "z": 11,
+      "file": "ec-detail.webp",
+      "bounds": {
+        "x0": 0.5751819610595703,
+        "y0": 0.5892314910888672,
+        "x1": 0.5780963897705078,
+        "y1": 0.5910549163818359
+      },
+      "px": {
+        "w": 1528,
+        "h": 956
+      },
+      "bytes": 171906
+    },
+    {
+      "id": "cape-context",
+      "region": "cape",
+      "z": 9,
+      "file": "cape-context.webp",
+      "bounds": {
+        "x0": 0.5488815307617188,
+        "y0": 0.5942306518554688,
+        "x1": 0.5577850341796875,
+        "y1": 0.6049270629882812
+      },
+      "px": {
+        "w": 1167,
+        "h": 1402
+      },
+      "bytes": 219582
+    },
+    {
+      "id": "cape-detail",
+      "region": "cape",
+      "z": 11,
+      "file": "cape-detail.webp",
+      "bounds": {
+        "x0": 0.5523910522460938,
+        "y0": 0.5986747741699219,
+        "x1": 0.5544338226318359,
+        "y1": 0.6003684997558594
+      },
+      "px": {
+        "w": 1071,
+        "h": 888
+      },
+      "bytes": 213706
+    }
+  ],
+  "ocean": "#0a152a",
+  "totalBytes": 1903678
+}

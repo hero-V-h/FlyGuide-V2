@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="theme-color" content="#1F3D29"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="FlyGuide"/>
+<title>FlyGuide · South African fly fishing guide</title>
+<meta name="description" content="Condition weighted fly recommendations, venue guides, hatch calendars and an interactive map for Dullstroom, the KZN Drakensberg, the Eastern Cape Highlands and the Cape streams."/>
+<meta property="og:title" content="FlyGuide · South African fly fishing guide"/>
+<meta property="og:description" content="Pick the right fly before you reach the water. Four trout regions, one guide."/>
+<meta property="og:type" content="website"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231F3D29'/%3E%3Cpath d='M19 7v11a5 5 0 0 1-10 0v-2' fill='none' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M19 10c3-3 7-3 7.5-1.8S24.5 12.5 19 13' fill='none' stroke='%23D08A4A' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@500;600&display=swap" rel="stylesheet"/>
+<!--BUILD:head-scripts-->
+<style>
+<!--BUILD:styles-->
+</style>
+</head>
+<body>
+<!--BUILD:icons-->
+<a class="skip" href="#main">Skip to content</a>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- ═══ AUTH ═══ -->
+<div class="auth-overlay" id="auth-overlay" role="dialog" aria-modal="true" aria-labelledby="auth-heading">
+  <div class="auth-split">
+    <div class="auth-photo">
+      <img id="auth-photo-img" alt="Angler casting on a highland stream in the Eastern Cape"/>
+      <div class="auth-photo-copy">
+        <div class="brand"><span class="brand-mark"><svg><use href="#i-fly"/></svg></span><span>FlyGuide</span></div>
+        <h2 class="heading-4">Four regions.<br/>One guide in your pocket.</h2>
+        <p class="body-6">Fly picks weighted to today's water, local venue notes and hatch calendars for Dullstroom, the Drakensberg, the Eastern Cape Highlands and the Cape streams.</p>
+      </div>
+    </div>
+    <div class="auth-pane">
+      <div class="auth-box">
+        <h1 class="heading-5" id="auth-heading">Welcome to FlyGuide</h1>
+        <p class="body-6">South Africa's fly fishing guide. Sign in or start your free trial.</p>
+        <div class="auth-tabs" role="tablist">
+          <button class="auth-tab active" role="tab" onclick="switchAuthTab('login',this)" id="auth-tab-login">Sign in</button>
+          <button class="auth-tab" role="tab" onclick="switchAuthTab('signup',this)" id="auth-tab-signup">Create account</button>
+        </div>
+        <div id="auth-error" class="auth-error" role="alert"></div>
+        <div id="auth-form-login" data-enter="handleLogin">
+          <div class="auth-field"><label for="login-email">Email address</label><input type="email" id="login-email" placeholder="you@example.co.za" autocomplete="email" required/></div>
+          <div class="auth-field"><label for="login-password">Password</label><input type="password" id="login-password" placeholder="Your password" autocomplete="current-password" required/></div>
+          <label class="check-row"><input type="checkbox" id="remember-me" checked/> Remember me on this device</label>
+          <button type="button" class="btn btn-primary auth-btn" onclick="handleLogin()">Sign in</button>
+          <div class="auth-skip"><button type="button" class="link" onclick="forgotPassword()">Forgot your password?</button></div>
+        </div>
+        <div id="auth-form-signup" style="display:none" data-enter="handleSignup">
+          <div class="auth-field"><label for="signup-name">Full name</label><input type="text" id="signup-name" placeholder="Thabo Nkosi" autocomplete="name" required/></div>
+          <div class="auth-field"><label for="signup-email">Email address</label><input type="email" id="signup-email" placeholder="you@example.co.za" autocomplete="email" required/></div>
+          <div class="auth-field"><label for="signup-password">Password</label><input type="password" id="signup-password" placeholder="At least 6 characters" autocomplete="new-password" required minlength="6"/></div>
+          <button type="button" class="btn btn-primary auth-btn" onclick="handleSignup()">Create my account</button>
+        </div>
+        <div class="auth-divider">or</div>
+        <div class="auth-skip"><button type="button" class="link" onclick="continueAsGuest()">Continue without an account (Dullstroom only)</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PLANS ═══ -->
+<div class="plan-screen" id="plan-screen" role="dialog" aria-modal="true" aria-labelledby="plan-heading">
+  <div class="plan-box">
+    <h2 class="heading-5 plan-title" id="plan-heading">Choose your plan</h2>
+    <p class="body-6 plan-subtitle">Start free for 7 days. No card needed to try it.</p>
+    <div class="plan-toggle">
+      <button class="plan-toggle-btn active" onclick="setBilling('monthly',this)" id="billing-monthly">Monthly</button>
+      <button class="plan-toggle-btn" onclick="setBilling('annual',this)" id="billing-annual">Annual</button>
+    </div>
+    <div class="plan-saving" id="plan-saving">Save 30% with R749 a year instead of R1,068</div>
+    <div class="plan-card" id="plan-free" onclick="selectPlan('free')" role="button" tabindex="0">
+      <div class="plan-name">Free</div>
+      <div class="plan-price">R0 <span>forever</span></div>
+      <div class="plan-desc">7 day full trial, then limited access</div>
+      <ul class="plan-features"><li>Dullstroom region</li><li>Basic fly recommendations</li><li class="locked">All 4 South African regions</li><li class="locked">Catch log and session history</li><li class="locked">Stats and charts</li><li class="locked">Rig builder and tippet guide</li><li class="locked">Live weather integration</li></ul>
+    </div>
+    <div class="plan-card selected" id="plan-pro" onclick="selectPlan('pro')" role="button" tabindex="0" style="margin-top:var(--s-300)">
+      <div class="plan-badge">Most popular · 7 day free trial</div>
+      <div class="plan-name">FlyGuide Pro</div>
+      <div class="plan-price" id="pro-price">R89 <span>/ month</span></div>
+      <div class="plan-desc">Everything you need on the water</div>
+      <ul class="plan-features"><li>All 4 South African regions and the interactive map</li><li>Full weighted fly recommendations</li><li>Catch log, session history and export</li><li>Stats and performance charts</li><li>Rig builder and tippet calculator</li><li>Live weather auto fill</li><li>Hatch calendars and venue guides</li><li>Ask FlyGuide assistant</li><li>New regions as they launch</li></ul>
+    </div>
+    <button class="btn btn-primary btn-block plan-confirm" onclick="confirmPlan()" id="plan-confirm-btn">Start 7 day free trial</button>
+    <div class="auth-skip"><span class="caption-5 muted">Cancel anytime · Secure payment via Stripe</span></div>
+    <div class="auth-skip"><button type="button" class="link" onclick="closePlanScreen()">Not now</button></div>
+  </div>
+</div>
+
+<!-- ═══ TOP BAR ═══ -->
+<header class="topbar" id="topbar">
+  <a class="brand" href="#explore" onclick="event.preventDefault();go('explore')"><span class="brand-mark"><svg><use href="#i-fly"/></svg></span><span class="brand-word">FlyGuide</span></a>
+  <button class="region-pill" onclick="go('explore');setTimeout(function(){document.getElementById('map-card').scrollIntoView({behavior:'smooth',block:'start'})},60)" aria-label="Change region">
+    <span class="dot"></span><span class="lbl" id="region-pill-label">Dullstroom</span><svg><use href="#i-caret"/></svg>
+  </button>
+  <nav class="desk-nav" aria-label="Primary">
+    <button class="desk-link" data-go="explore">Explore</button>
+    <button class="desk-link" data-go="recommend">Recommend</button>
+    <button class="desk-link" data-go="flybox">Fly box</button>
+    <button class="desk-link" data-go="knowledge">Learn</button>
+    <button class="desk-link" data-go="log">Catch log</button>
+    <button class="desk-link" data-more>More</button>
+  </nav>
+  <div class="top-actions">
+    <span class="plan-chip" id="trial-chip"></span>
+    <button class="icon-btn" onclick="showNotifications()" aria-label="Alerts and tips"><svg><use href="#i-bell"/></svg><span class="dot-badge" id="notif-dot"></span></button>
+    <button class="avatar-btn" id="account-avatar" onclick="accountButton()" aria-label="Account">?</button>
+  </div>
+</header>
+
+<main id="main">
+<div class="wrap">
+
+<!-- ═══ EXPLORE ═══ -->
+<section id="panel-explore" class="panel active" aria-labelledby="hero-title">
+  <div class="hero" id="hero">
+    <div class="hero-media" id="hero-media"></div>
+    <div class="hero-scrim"></div>
+    <div class="hero-grain"></div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow"><span class="dot"></span><span id="hero-tag">Dullstroom · Mpumalanga Highlands</span></div>
+      <h1 class="heading-1" id="hero-title">Pick the right fly<br/>before you reach the water.</h1>
+      <p class="body-3 hero-sub" id="hero-sub">Fly recommendations weighted to today's conditions, built on local guide knowledge across South Africa's four great trout regions.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" onclick="go('recommend')"><svg><use href="#i-target"/></svg>Get today's recommendation</button>
+        <button class="btn btn-glass" onclick="document.getElementById('map-card').scrollIntoView({behavior:'smooth',block:'start'})"><svg><use href="#i-map"/></svg>Explore the map</button>
+      </div>
+      <div class="hero-proof">
+        <div><b id="hp-flies">25</b><span>patterns in this region</span></div>
+        <div><b id="hp-venues">4</b><span>featured waters</span></div>
+        <div><b id="hp-best">Mar to May</b><span>prime season</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="map-section">
+    <div class="sec-head"><div><div class="eyebrow" style="color:var(--copper)">Where are you fishing</div><h2 class="heading-4" style="margin-top:var(--s-50)">The waters of South Africa</h2></div></div>
+    <div class="map-card" id="map-card" style="scroll-margin-top:calc(var(--nav-h) + var(--s-300))">
+      <div class="map-stage" id="map-stage" role="region" aria-label="Satellite map of South Africa's trout regions">
+        <div class="map-world" id="map-world" aria-hidden="true"></div>
+        <div class="map-overlay" id="map-overlay"></div>
+        <div class="map-ui">
+          <div class="crumb" id="crumb">
+            <button onclick="mapHome()" id="crumb-home" aria-label="Back to all of South Africa"><svg><use href="#i-back"/></svg><span>South Africa</span></button>
+            <span class="sep" aria-hidden="true">/</span><span class="here" id="crumb-here"></span>
+          </div>
+          <div class="zoom-ctl">
+            <button onclick="mapZoomBy(1.6)" aria-label="Zoom in"><svg><use href="#i-plus"/></svg></button>
+            <button onclick="mapZoomBy(1/1.6)" aria-label="Zoom out"><svg><use href="#i-minus"/></svg></button>
+            <button onclick="mapRecenter()" aria-label="Recenter"><svg><use href="#i-crosshair"/></svg></button>
+          </div>
+        </div>
+        <div class="map-foot">
+          <div class="scalebar" id="scalebar"><span id="scale-txt">100 km</span><i id="scale-bar"></i></div>
+          <div class="map-foot-r">
+            <div class="map-hint" id="map-hint">Drag to pan. Pinch or hold Ctrl and scroll to zoom.</div>
+            <div class="map-attr" id="map-attr">
+              <button type="button" class="map-attr-btn" id="map-attr-btn" onclick="toggleAttribution()" aria-expanded="false" aria-controls="map-attr-full" aria-label="Show full map credits"><svg><use href="#i-info"/></svg></button>
+              <span class="map-attr-short">EOxCloudless 2016 · Natural Earth</span>
+              <span class="map-attr-full" id="map-attr-full">Imagery: EOxCloudless <a href="https://cloudless.eox.at" target="_blank" rel="noopener">cloudless.eox.at</a> by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2016 &amp; 2017), CC BY 4.0 · Borders: Natural Earth</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="map-side" id="map-side" aria-live="polite"></aside>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="overview">
+      <div class="card">
+        <div class="eyebrow" style="color:var(--copper)">Season at a glance</div>
+        <h3 class="heading-6" style="margin-top:var(--s-50)" id="ov-title">Dullstroom trout calendar</h3>
+        <p class="body-6 muted" id="ov-best" style="margin-top:var(--s-50)"></p>
+        <div class="season-bar" id="season-bar"></div>
+        <div class="legend"><span><i style="background:var(--forest)"></i>Prime</span><span><i style="background:#6E8F75"></i>Good</span><span><i style="background:#C9B27C"></i>Technical</span><span><i style="background:var(--border)"></i>Weather dependent or closed</span></div>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;gap:var(--s-100)">
+        <div class="eyebrow" style="color:var(--copper)">This month</div>
+        <h3 class="heading-6" id="tm-title">July</h3>
+        <p class="body-6" id="tm-flies" style="color:var(--ink-2)"></p>
+        <p class="caption-5 muted" id="tm-note"></p>
+        <div style="display:flex;gap:var(--s-75);flex-wrap:wrap;margin-top:auto;padding-top:var(--s-100)">
+          <button class="btn btn-forest btn-sm" onclick="go('hatch')"><svg><use href="#i-calendar"/></svg>Full calendar</button>
+          <button class="btn btn-secondary btn-sm" onclick="go('flybox')"><svg><use href="#i-fly"/></svg>Fly box</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="venues-section">
+    <div class="sec-head"><div><div class="eyebrow" style="color:var(--copper)">Featured waters</div><h2 class="heading-4" style="margin-top:var(--s-50)" id="venues-title">Dullstroom venues</h2></div></div>
+    <div id="venues-content"></div>
+  </div>
+</section>
+
+<!-- ═══ RECOMMEND ═══ -->
+<section id="panel-recommend" class="panel" aria-labelledby="rec-h">
+  <div class="page-head"><span class="eyebrow" id="rec-eyebrow">Dullstroom</span><h1 class="heading-3" id="rec-h">Fly recommendation</h1><p class="body-3">Set the conditions on the water and FlyGuide ranks every pattern in the regional fly box for you.</p></div>
+  <div class="rec-layout">
+    <div class="rec-form">
+      <div id="weather-prompt" class="weather-prompt"><span class="wi"><svg><use href="#i-cloud"/></svg></span><div class="t"><b>Use live weather</b><span>Fill temperature, wind and pressure from your location</span></div><button class="btn btn-secondary btn-sm" onclick="fetchWeather()">Load</button></div>
+      <div id="weather-loading" class="weather-loading" style="display:none"><span>Fetching live weather</span><div class="skel" style="width:60%"></div><div class="skel" style="width:85%"></div><div class="skel" style="width:40%"></div><div class="spinner"></div></div>
+      <div id="weather-error" class="weather-error" style="display:none" role="alert"></div>
+      <div id="weather-card" class="weather-card" style="display:none">
+        <div class="weather-card-inner">
+          <div id="w-icon" class="weather-icon"></div>
+          <div class="weather-main">
+            <div id="w-location" class="weather-location">–</div>
+            <div id="w-temp" class="weather-temp">–°C</div>
+            <div id="w-desc" class="weather-desc">–</div>
+            <div class="weather-stats"><div class="weather-stat">Wind<strong id="w-wind">–</strong></div><div class="weather-stat">Pressure<strong id="w-pressure">–</strong></div><div class="weather-stat">Humidity<strong id="w-humidity">–</strong></div><div class="weather-stat">Rain<strong id="w-rain">–</strong></div></div>
+          </div>
+          <button class="weather-btn" onclick="fetchWeather()">Refresh</button>
+        </div>
+        <div id="weather-autofill" class="weather-autofill" style="display:none"><strong>Ready to fill:</strong><span id="w-autofill-summary"></span><button class="apply-btn" onclick="applyWeather()">Apply to conditions</button></div>
+      </div>
+
+      <div class="input-group">
+        <div class="group-title"><svg><use href="#i-water"/></svg>Water and location</div>
+        <div class="field"><label for="venue">Venue</label><select id="venue"></select></div>
+        <div class="grid2" style="margin-top:var(--s-200)">
+          <div class="field"><label for="clarity">Water clarity</label><select id="clarity"><option value="crystal">Crystal clear</option><option value="clear">Clear</option><option value="offcolour">Off colour</option><option value="murky">Murky</option></select></div>
+          <div class="field"><label for="level">Water level</label><select id="level"><option value="normal" selected>Normal</option><option value="low">Low or dropping</option><option value="high">High or rising</option></select></div>
+        </div>
+        <div class="grid3" style="margin-top:var(--s-200)">
+          <div class="field"><label for="temp">Temp (°C)</label><input type="number" id="temp" value="14" min="4" max="28" inputmode="numeric"/></div>
+          <div class="field"><label for="season">Season</label><select id="season"><option value="summer">Summer</option><option value="autumn">Autumn</option><option value="winter">Winter</option><option value="spring">Spring</option></select></div>
+          <div class="field"><label for="month">Month</label><select id="month"><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select></div>
+        </div>
+      </div>
+      <div class="input-group">
+        <div class="group-title"><svg><use href="#i-sun"/></svg>Conditions</div>
+        <div class="grid3">
+          <div class="field"><label for="tod">Time of day</label><select id="tod"><option value="early">Early morning</option><option value="midmorning" selected>Mid morning</option><option value="midday">Midday</option><option value="afternoon">Afternoon</option><option value="evening">Evening</option></select></div>
+          <div class="field"><label for="weather">Weather</label><select id="weather"><option value="sunny">Sunny</option><option value="overcast" selected>Overcast</option><option value="rain">Light rain</option><option value="windy">Windy</option><option value="coldfront">Cold front</option><option value="stormgap">Storm gap</option></select></div>
+          <div class="field"><label for="wind">Wind</label><select id="wind"><option value="calm" selected>Calm or light</option><option value="gentle">Gentle</option><option value="moderate">Moderate</option><option value="strong">Strong</option></select></div>
+        </div>
+      </div>
+      <div class="input-group">
+        <div class="group-title"><svg><use href="#i-gauge"/></svg>Pressure and fish activity</div>
+        <div class="press-row" id="pressureRow" role="radiogroup" aria-label="Barometric pressure">
+          <div class="press-btn active" role="radio" tabindex="0" onclick="setPress('rising',this)">Rising</div>
+          <div class="press-btn" role="radio" tabindex="0" onclick="setPress('stable',this)">Stable</div>
+          <div class="press-btn" role="radio" tabindex="0" onclick="setPress('falling',this)">Falling</div>
+          <div class="press-btn" role="radio" tabindex="0" onclick="setPress('low',this)">Post storm</div>
+        </div>
+        <div class="grid2" style="margin-top:var(--s-200)">
+          <div class="field"><label for="surface">Surface activity</label><select id="surface"><option value="none">No rises</option><option value="occasional">Occasional rises</option><option value="active">Active rising</option><option value="sipping">Sipping, selective</option><option value="slashing">Slashing aggressively</option></select></div>
+          <div class="field"><label for="species">Target species</label><select id="species"><option value="rainbow">Rainbow trout</option><option value="brown">Brown trout</option><option value="both" selected>Both species</option></select></div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="recommend()"><svg><use href="#i-target"/></svg>Get recommendation</button>
+        <button class="btn btn-secondary" onclick="printCard()"><svg><use href="#i-print"/></svg>Print card</button>
+      </div>
+    </div>
+    <div class="rec-results">
+      <div class="sec-head" style="margin-top:var(--s-300)"><span class="sec-label">Recommended flies</span></div>
+      <div class="results" id="results"></div>
+      <div id="print-card-area"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FLY BOX ═══ -->
+<section id="panel-flybox" class="panel" aria-labelledby="fb-h">
+  <div class="page-head"><span class="eyebrow" id="fb-eyebrow">Dullstroom</span><h1 class="heading-3" id="fb-h">Fly box</h1><p class="body-3" id="flybox-note">Every pattern FlyGuide uses for this region, grouped by type.</p></div>
+  <div class="press-row" id="flybox-filter" style="margin-bottom:var(--s-300)">
+    <div class="press-btn active" onclick="filterFlybox('all',this)">All</div>
+    <div class="press-btn" onclick="filterFlybox('dry',this)">Dry</div>
+    <div class="press-btn" onclick="filterFlybox('emerger',this)">Emerger</div>
+    <div class="press-btn" onclick="filterFlybox('nymph',this)">Nymph</div>
+    <div class="press-btn" onclick="filterFlybox('streamer',this)">Streamer</div>
+    <div class="press-btn" onclick="filterFlybox('wet',this)">Wet</div>
+  </div>
+  <div id="flybox-list"></div>
+</section>
+
+<!-- ═══ LEARN ═══ -->
+<section id="panel-knowledge" class="panel" aria-labelledby="kn-h">
+  <div class="page-head"><span class="eyebrow">Knowledge</span><h1 class="heading-3" id="kn-h">Learn the water</h1><p class="body-3">Species, insects, reading water, casting, knots, temperature and the rules for every region.</p></div>
+  <div id="knowledge-content"></div>
+</section>
+
+<!-- ═══ HATCH ═══ -->
+<section id="panel-hatch" class="panel" aria-labelledby="ha-h">
+  <div class="page-head"><span class="eyebrow" id="ha-eyebrow">Dullstroom</span><h1 class="heading-3" id="ha-h">Hatch calendar</h1><p class="body-3">Month by month ratings, primary flies and guide notes. The current month is highlighted.</p></div>
+  <div id="hatch-content"></div>
+</section>
+
+<!-- ═══ RIG ═══ -->
+<section id="panel-rig" class="panel" aria-labelledby="rig-h">
+  <div class="page-head"><span class="eyebrow">Pro tool</span><h1 class="heading-3" id="rig-h">Rig builder</h1><p class="body-3" id="rig-note">A two fly combination with dropper length and depth matched to your conditions.</p></div>
+  <div class="paywall-banner pw" style="display:none"><div class="paywall-banner-text"><div class="paywall-banner-title">Rig builder is a Pro feature</div><div class="paywall-banner-sub">Get matched two fly rigs for every region and season.</div></div><button class="paywall-banner-btn" onclick="showPlanScreen()">Upgrade to Pro</button></div>
+  <div class="pw-content">
+    <div class="input-group">
+      <div class="grid3">
+        <div class="field"><label for="rig-season">Season</label><select id="rig-season"><option value="summer">Summer</option><option value="autumn">Autumn</option><option value="winter" selected>Winter</option><option value="spring">Spring</option></select></div>
+        <div class="field"><label for="rig-surface">Surface activity</label><select id="rig-surface"><option value="none">No rises</option><option value="occasional">Occasional</option><option value="active">Active</option><option value="sipping">Sipping</option></select></div>
+        <div class="field"><label for="rig-venue">Water type</label><select id="rig-venue"><option value="still">Stillwater</option><option value="river">River or stream</option></select></div>
+      </div>
+      <div class="btn-row"><button class="btn btn-forest" onclick="buildRig()"><svg><use href="#i-link"/></svg>Build my rig</button></div>
+    </div>
+    <div id="rig-result"></div>
+  </div>
+</section>
+
+<!-- ═══ TIPPET ═══ -->
+<section id="panel-tippet" class="panel" aria-labelledby="tip-h">
+  <div class="page-head"><span class="eyebrow">Pro tool</span><h1 class="heading-3" id="tip-h">Tippet and leader guide</h1><p class="body-3">Enter your fly size and conditions for the right tippet strength, diameter and leader length.</p></div>
+  <div class="paywall-banner pw" style="display:none"><div class="paywall-banner-text"><div class="paywall-banner-title">The tippet calculator is a Pro feature</div><div class="paywall-banner-sub">The full reference table below stays free.</div></div><button class="paywall-banner-btn" onclick="showPlanScreen()">Upgrade to Pro</button></div>
+  <div class="input-group pw-content">
+    <div class="grid3">
+      <div class="field"><label for="tip-size">Hook size</label><select id="tip-size"><option value="8">Size 8</option><option value="10">Size 10</option><option value="12">Size 12</option><option value="14">Size 14</option><option value="16">Size 16</option><option value="18" selected>Size 18</option><option value="20">Size 20</option><option value="22">Size 22</option></select></div>
+      <div class="field"><label for="tip-clarity">Water clarity</label><select id="tip-clarity"><option value="crystal">Crystal clear</option><option value="clear" selected>Clear</option><option value="offcolour">Off colour</option><option value="murky">Murky</option></select></div>
+      <div class="field"><label for="tip-type">Fly type</label><select id="tip-type"><option value="dry">Dry fly</option><option value="nymph">Nymph</option><option value="streamer">Streamer</option><option value="emerger">Emerger</option></select></div>
+    </div>
+    <div class="btn-row"><button class="btn btn-forest" onclick="calcTippet()"><svg><use href="#i-ruler"/></svg>Calculate tippet</button></div>
+  </div>
+  <div id="tippet-result"></div>
+  <div class="section"><div class="sec-head"><span class="sec-label">Full tippet reference</span></div>
+    <div class="table-wrap"><table class="tippet-table" id="tippet-full-table"><tr><th>X</th><th>Diameter</th><th>Strength</th><th>Best for</th><th>Fly sizes</th></tr><tr><td>0X</td><td>0.28mm</td><td>~9kg</td><td>Large streamers, strong current</td><td>2–8</td></tr><tr><td>1X</td><td>0.25mm</td><td>~7kg</td><td>Streamers, big nymphs</td><td>4–10</td></tr><tr><td>2X</td><td>0.23mm</td><td>~5.5kg</td><td>Nymphs, woolly buggers</td><td>6–12</td></tr><tr><td>3X</td><td>0.20mm</td><td>~4kg</td><td>General nymphing, larger dries</td><td>10–14</td></tr><tr><td>4X</td><td>0.17mm</td><td>~2.7kg</td><td>Standard dries, emergers</td><td>12–16</td></tr><tr><td>5X</td><td>0.15mm</td><td>~1.8kg</td><td>Technical dries, small nymphs</td><td>14–18</td></tr><tr><td>6X</td><td>0.13mm</td><td>~1.1kg</td><td>Small emergers, midges</td><td>18–22</td></tr><tr><td>7X</td><td>0.10mm</td><td>~0.7kg</td><td>Tiny midges, very clear water</td><td>20–26</td></tr></table></div>
+  </div>
+</section>
+
+<!-- ═══ CATCH LOG ═══ -->
+<section id="panel-log" class="panel" aria-labelledby="log-h">
+  <div class="page-head"><span class="eyebrow">Your sessions</span><h1 class="heading-3" id="log-h">Catch log</h1><p class="body-3">Record every trip and see which flies actually work for you.</p></div>
+  <div id="paywall-log" class="paywall-banner" style="display:none"><div class="paywall-banner-text"><div class="paywall-banner-title">Catch log is a Pro feature</div><div class="paywall-banner-sub">Track every session, see your best flies and export your data.</div></div><button class="paywall-banner-btn" onclick="showPlanScreen()">Upgrade to Pro</button></div>
+  <div id="log-content">
+    <div class="stats-grid">
+      <div class="stat-card"><span class="stat-num" id="stat-sessions">0</span><span class="stat-lbl">Sessions</span></div>
+      <div class="stat-card"><span class="stat-num" id="stat-fish">0</span><span class="stat-lbl">Fish</span></div>
+      <div class="stat-card"><span class="stat-num" id="stat-avg">0</span><span class="stat-lbl">Avg per trip</span></div>
+    </div>
+    <div id="top-flies-section" style="display:none;margin-bottom:var(--s-300)"><div class="sec-head"><span class="sec-label">Your top flies</span></div><div class="card card-tight" id="top-flies-list"></div></div>
+    <div class="sec-head"><span class="sec-label">Log a session</span></div>
+    <div class="log-form">
+      <div class="grid3">
+        <div class="field"><label for="log-date">Date</label><input type="date" id="log-date"/></div>
+        <div class="field"><label for="log-region">Region</label><select id="log-region"><option value="Dullstroom">Dullstroom</option><option value="KwaZulu-Natal">KwaZulu-Natal</option><option value="Eastern Cape">Eastern Cape</option><option value="Cape Streams">Cape Streams</option></select></div>
+        <div class="field"><label for="log-fish">Fish caught</label><input type="number" id="log-fish" value="0" min="0" max="99" inputmode="numeric"/></div>
+      </div>
+      <div class="grid3">
+        <div class="field"><label for="log-venue-text">Venue or river</label><input type="text" id="log-venue-text" placeholder="Bushmans River"/></div>
+        <div class="field"><label for="log-temp">Temp (°C)</label><input type="number" id="log-temp" value="14" min="4" max="28" inputmode="numeric"/></div>
+        <div class="field"><label for="log-weather">Weather</label><select id="log-weather"><option>Sunny</option><option>Overcast</option><option>Light rain</option><option>Windy</option><option>Cold front</option></select></div>
+      </div>
+      <div class="log-row"><label for="log-flies">Flies that worked</label><input type="text" id="log-flies" placeholder="DDD #14, Walker's Killer #8"/></div>
+      <div class="log-row"><label for="log-failed">Flies that failed</label><input type="text" id="log-failed" placeholder="Woolly Bugger, Adams"/></div>
+      <div class="log-row"><label for="log-notes">Session notes</label><textarea id="log-notes" placeholder="Hatch observed, fish behaviour, water conditions"></textarea></div>
+      <div class="log-row"><label>Rating</label><div class="star-row" id="star-row"><span class="star" onclick="setStars(1)">★</span><span class="star" onclick="setStars(2)">★</span><span class="star" onclick="setStars(3)">★</span><span class="star" onclick="setStars(4)">★</span><span class="star" onclick="setStars(5)">★</span><span id="star-label">Tap to rate</span></div></div>
+      <div class="log-actions">
+        <button type="button" class="btn btn-forest" onclick="saveEntry()">Save session</button>
+        <button type="button" class="btn btn-secondary" onclick="exportCSV()">Export CSV</button>
+        <button type="button" class="btn btn-secondary" onclick="showCompare()">Compare sessions</button>
+      </div>
+    </div>
+    <div id="compare-section" style="display:none;margin-top:var(--s-300)"><div class="sec-head"><span class="sec-label">Session comparison</span></div><div class="compare-grid" id="compare-cards"></div></div>
+    <div class="section"><div class="sec-head"><span class="sec-label">Session history</span></div><div id="entries-list"></div></div>
+  </div>
+</section>
+
+<!-- ═══ STATS ═══ -->
+<section id="panel-stats" class="panel" aria-labelledby="st-h">
+  <div class="page-head"><span class="eyebrow">Pro tool</span><h1 class="heading-3" id="st-h">Stats</h1><p class="body-3">Your best flies, seasons and regions over time.</p></div>
+  <div id="paywall-stats" class="paywall-banner" style="display:none"><div class="paywall-banner-text"><div class="paywall-banner-title">Stats and charts are a Pro feature</div><div class="paywall-banner-sub">See your best flies, seasons and venues over time.</div></div><button class="paywall-banner-btn" onclick="showPlanScreen()">Upgrade to Pro</button></div>
+  <div class="stats-grid"><div class="stat-card"><span class="stat-num" id="s-sessions">0</span><span class="stat-lbl">Sessions</span></div><div class="stat-card"><span class="stat-num" id="s-fish">0</span><span class="stat-lbl">Total fish</span></div><div class="stat-card"><span class="stat-num" id="s-best">–</span><span class="stat-lbl">Best region</span></div></div>
+  <div id="stats-empty" class="empty-log" style="display:none"><svg><use href="#i-chart"/></svg><b>No sessions yet</b>Log a few trips in the catch log and your charts appear here.<button class="btn btn-forest btn-sm" onclick="go('log')">Open catch log</button></div>
+  <div id="stats-charts">
+    <div class="chart-wrap"><div class="chart-title">Fish per session</div><canvas id="chart-fish" height="160"></canvas></div>
+    <div class="grid-2" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+      <div class="chart-wrap"><div class="chart-title">Top performing flies</div><canvas id="chart-flies" height="220"></canvas></div>
+      <div class="chart-wrap"><div class="chart-title">Sessions by region</div><canvas id="chart-regions" height="220"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CHAT ═══ -->
+<section id="panel-chat" class="panel" aria-labelledby="ch-h">
+  <div class="page-head"><span class="eyebrow">Pro tool</span><h1 class="heading-3" id="ch-h">Ask FlyGuide</h1><p class="body-3">Fly selection, technique, hatches, regulations, knots, species or tackle. Ask anything.</p></div>
+  <div id="paywall-chat" class="paywall-banner" style="display:none"><div class="paywall-banner-text"><div class="paywall-banner-title">Ask FlyGuide is a Pro feature</div><div class="paywall-banner-sub">Ask anything about fly selection, technique, entomology, regulations or tackle.</div></div><button class="paywall-banner-btn" onclick="showPlanScreen()">Upgrade to Pro</button></div>
+  <div id="chat-container">
+    <div class="chat-shell">
+      <div class="chat-messages" id="chat-messages">
+        <div class="chat-message assistant"><div class="chat-bubble assistant-bubble">Welcome to FlyGuide. I'm your fly fishing guide for South Africa and beyond. Ask me which fly to use right now, how to read a piece of water, how to approach rising fish, the rules for a region, knots or tackle. What would you like to know?</div></div>
+      </div>
+      <div class="chat-suggestions" id="chat-suggestions">
+        <button class="chat-suggest-btn" onclick="sendSuggestion(this)">What fly should I use on the Bushmans River in April?</button>
+        <button class="chat-suggest-btn" onclick="sendSuggestion(this)">How do I fish a dry fly to a rising brown trout?</button>
+        <button class="chat-suggest-btn" onclick="sendSuggestion(this)">What are the regulations for Cape Piscatorial Society waters?</button>
+        <button class="chat-suggest-btn" onclick="sendSuggestion(this)">Why are my flies dragging?</button>
+        <button class="chat-suggest-btn" onclick="sendSuggestion(this)">What rod weight should I use for Dullstroom stillwaters?</button>
+      </div>
+      <div class="chat-input-row" data-enter="sendChat">
+        <input type="text" id="chat-input" class="chat-input" placeholder="Ask anything about fly fishing" aria-label="Your question"/>
+        <button type="button" class="btn btn-forest" id="chat-send-btn" onclick="sendChat()">Send</button>
+      </div>
+    </div>
+    <div class="chat-footer-note">Powered by Claude. Answers can be wrong, so always confirm regulations with the relevant authority.</div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div>FlyGuide · Built on local guide knowledge · Always watch what's on the water</div>
+  <nav aria-label="Legal"><button type="button" class="link" onclick="showLegal('privacy')">Privacy policy</button><button type="button" class="link" onclick="showLegal('terms')">Terms and conditions</button></nav>
+</footer>
+</div>
+</main>
+
+<!-- ═══ BOTTOM TABS (mobile) ═══ -->
+<nav class="tabbar" aria-label="Primary">
+  <button class="tab" data-go="explore"><svg><use href="#i-map"/></svg>Explore</button>
+  <button class="tab" data-go="recommend"><svg><use href="#i-target"/></svg>Recommend</button>
+  <button class="tab" data-go="flybox"><svg><use href="#i-fly"/></svg>Fly box</button>
+  <button class="tab" data-go="knowledge"><svg><use href="#i-book"/></svg>Learn</button>
+  <button class="tab" data-more><svg><use href="#i-grid"/></svg>More</button>
+</nav>
+
+<!-- ═══ SHEETS ═══ -->
+<div class="scrim" id="scrim" onclick="closeSheets()"></div>
+<div class="sheet" id="more-sheet" role="dialog" aria-modal="true" aria-labelledby="more-title">
+  <div class="sheet-handle"></div>
+  <h2 class="heading-6 sheet-title" id="more-title">More tools</h2>
+  <div class="more-grid">
+    <button class="more-item" onclick="moreGo('log')"><svg><use href="#i-notebook"/></svg><span class="more-lbl">Catch log</span><span class="more-pro" id="more-pro-log">PRO</span></button>
+    <button class="more-item" onclick="moreGo('hatch')"><svg><use href="#i-calendar"/></svg><span class="more-lbl">Hatch calendar</span></button>
+    <button class="more-item" onclick="moreGo('rig')"><svg><use href="#i-link"/></svg><span class="more-lbl">Rig builder</span><span class="more-pro" id="more-pro-rig">PRO</span></button>
+    <button class="more-item" onclick="moreGo('tippet')"><svg><use href="#i-ruler"/></svg><span class="more-lbl">Tippet guide</span><span class="more-pro" id="more-pro-tippet">PRO</span></button>
+    <button class="more-item" onclick="moreGo('stats')"><svg><use href="#i-chart"/></svg><span class="more-lbl">Stats</span><span class="more-pro" id="more-pro-stats">PRO</span></button>
+    <button class="more-item" onclick="moreGo('chat')"><svg><use href="#i-chat"/></svg><span class="more-lbl">Ask FlyGuide</span><span class="more-pro" id="more-pro-chat">PRO</span></button>
+  </div>
+</div>
+<div class="sheet" id="acct-sheet-overlay" role="dialog" aria-modal="true"><div class="sheet-handle"></div><div id="acct-sheet-body"></div></div>
+<div class="sheet" id="notif-overlay" role="dialog" aria-modal="true" aria-labelledby="notif-title"><div class="sheet-handle"></div><h2 class="heading-6 sheet-title" id="notif-title">Alerts and tips</h2><div id="notif-list"></div></div>
+<div class="sheet" id="confirm-sheet" role="dialog" aria-modal="true"><div class="sheet-handle"></div><div id="confirm-body"></div></div>
+
+<div class="modal" id="legal-overlay" role="dialog" aria-modal="true" aria-labelledby="legal-title">
+  <div class="modal-scrim" onclick="closeLegal()"></div>
+  <div class="modal-box">
+    <button class="icon-btn modal-close" onclick="closeLegal()" aria-label="Close"><svg><use href="#i-x"/></svg></button>
+    <h2 class="heading-5" id="legal-title" style="margin-bottom:var(--s-200)"></h2>
+    <div id="legal-content"></div>
+  </div>
+</div>
+<!--BUILD:app-script-->
+</body>
+</html>
