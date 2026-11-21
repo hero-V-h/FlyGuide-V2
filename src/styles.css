@@ -775,10 +775,7 @@ textarea{min-height:96px;resize:vertical}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   /* keep fades, drop movement */
-  .fly.enter,.side-body.swap,.venue-detail.swap,.chat-message.enter,.modal-box,.plan-box,.auth-box,.mk-venue.lbl-up .v-label{top:auto;bottom:calc(100% + 6px)}
-.mk-town .mk-inner{transition:opacity 150ms ease}
-.mk-town.clash .mk-inner{opacity:0}
-.mk-venue.enter .mk-inner{animation-name:fadeIn!important;animation-delay:0ms!important}
+  .fly.enter,.side-body.swap,.venue-detail.swap,.chat-message.enter,.modal-box,.plan-box,.auth-box,.mk-venue.enter .mk-inner{animation-name:fadeIn!important;animation-delay:0ms!important}
   .hero-media img,.hero-media img.on{transform:none;transition:opacity 300ms ease}
   .sheet,.sheet:not(.open){transform:translate(-50%,0);opacity:0;transition:opacity 200ms ease,visibility 0s 200ms}
   .sheet.open{opacity:1;transition:opacity 200ms ease}

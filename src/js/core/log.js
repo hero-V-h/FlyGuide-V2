@@ -165,13 +165,13 @@ function renderStatsBase() {
  var rArr = []; for (var k in regionFish) { rArr.push([k, regionFish[k]]); }
  rArr.sort(function(a,b){return b[1]-a[1];});
  var bvEl = document.getElementById('s-best'); if (bvEl && rArr.length) bvEl.textContent = rArr[0][0].split(' ')[0];
- var palette = ['#2d5a3d','#7a9e87','#3d6b7a','#9e6b3a','#5d8b9a','#c8900c','#a8c4b0','#c8904a'];
+ var palette = ['#1F3D29','#6E8F75','#2F5263','#9C5B24','#7D560E','#C9B27C','#5E6359','#D08A4A'];
  var sortedE = catchEntries.slice().reverse().slice(0,20);
  var fishLabels=[], fishData=[];
  for (var i=0;i<sortedE.length;i++){fishLabels.push(sortedE[i].date.slice(5));fishData.push(sortedE[i].fish||0);}
  if (chartFish) chartFish.destroy();
  var c1 = document.getElementById('chart-fish');
- if (c1) { chartFish = new Chart(c1.getContext('2d'),{type:'bar',data:{labels:fishLabels,datasets:[{data:fishData,backgroundColor:'#2d5a3d',borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{color:'#8a9088',font:{family:'Geist',size:12}},grid:{color:'rgba(232,235,228,0.8)'}},x:{ticks:{color:'#8a9088',font:{family:'Geist',size:11}},grid:{display:false}}}}}); }
+ if (c1) { chartFish = new Chart(c1.getContext('2d'),{type:'bar',data:{labels:fishLabels,datasets:[{data:fishData,backgroundColor:'#1F3D29',borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{color:'#5E6359',font:{family:'Geist',size:12}},grid:{color:'#E3DED3'}},x:{ticks:{color:'#5E6359',font:{family:'Geist',size:11}},grid:{display:false}}}}}); }
  var allF=[];
  for (var i=0;i<catchEntries.length;i++){var pts=catchEntries[i].flies.split(',');for(var j=0;j<pts.length;j++){var fn=pts[j].trim().replace(/#[0-9\u2013-]+/g,'').trim().toLowerCase();if(fn)allF.push(fn);}}
  var fCounts={}; for(var i=0;i<allF.length;i++){fCounts[allF[i]]=(fCounts[allF[i]]||0)+1;}
@@ -179,12 +179,12 @@ function renderStatsBase() {
  var flyLabels=[],flyCData=[]; for(var i=0;i<top8.length;i++){flyLabels.push(top8[i][0].split(' ').slice(0,2).join(' '));flyCData.push(top8[i][1]);}
  if (chartFlies) chartFlies.destroy();
  var c2 = document.getElementById('chart-flies');
- if (c2) { chartFlies = new Chart(c2.getContext('2d'),{type:'bar',data:{labels:flyLabels,datasets:[{data:flyCData,backgroundColor:palette,borderRadius:4}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{color:'#8a9088',font:{family:'Geist',size:12}},grid:{color:'rgba(232,235,228,0.8)'}},y:{ticks:{color:'#8a9088',font:{family:'Geist',size:12}},grid:{display:false}}}}}); }
+ if (c2) { chartFlies = new Chart(c2.getContext('2d'),{type:'bar',data:{labels:flyLabels,datasets:[{data:flyCData,backgroundColor:palette,borderRadius:4}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{color:'#5E6359',font:{family:'Geist',size:12}},grid:{color:'#E3DED3'}},y:{ticks:{color:'#5E6359',font:{family:'Geist',size:12}},grid:{display:false}}}}}); }
  var rCounts = {Dullstroom:0,'KwaZulu-Natal':0,'Eastern Cape':0,'Cape Streams':0};
  for (var i=0;i<catchEntries.length;i++){var rn=catchEntries[i].region||'Unknown';if(rCounts[rn]!==undefined)rCounts[rn]++;}
  if (chartRegions) chartRegions.destroy();
  var c3 = document.getElementById('chart-regions');
- if (c3) { chartRegions = new Chart(c3.getContext('2d'),{type:'doughnut',data:{labels:Object.keys(rCounts),datasets:[{data:Object.values(rCounts),backgroundColor:palette.slice(0,4),borderWidth:0}]},options:{plugins:{legend:{position:'bottom',labels:{color:'#4a5248',font:{family:'Geist',size:13},padding:14}}}}}); }
+ if (c3) { chartRegions = new Chart(c3.getContext('2d'),{type:'doughnut',data:{labels:Object.keys(rCounts),datasets:[{data:Object.values(rCounts),backgroundColor:palette.slice(0,4),borderWidth:0}]},options:{plugins:{legend:{position:'bottom',labels:{color:'#3B4038',font:{family:'Geist',size:13},padding:14}}}}}); }
 }
 
 function renderStats(){

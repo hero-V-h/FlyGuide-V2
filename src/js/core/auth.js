@@ -139,6 +139,7 @@ function afterAuth(){
 function showPlanScreen() {
  document.getElementById('plan-screen').style.display = 'block';
  document.getElementById('plan-screen').scrollTop = 0;
+ try { setTimeout(function(){ var b = document.getElementById('billing-monthly'); if (b) b.focus({preventScroll:true}); }, 30); } catch(e) {}
 }
 
 function closePlanScreen(){ document.getElementById('plan-screen').style.display = 'none'; if (currentUser && !currentUser.guest){ currentUser.planChosen = true; saveUser(); persistUserRecord(); } updateAppForUser(); }

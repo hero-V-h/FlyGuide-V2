@@ -157,7 +157,8 @@ function renderMap(){
   var tx = W / 2 - c.x * c.s, ty = H / 2 - c.y * c.s;
   var world = document.getElementById('map-world');
   world.style.transform = 'translate3d(' + tx.toFixed(2) + 'px,' + ty.toFixed(2) + 'px,0) scale(' + c.s.toFixed(5) + ')';
-  world.style.setProperty('--k', (1 / c.s).toFixed(5));
+  var k = (1 / c.s).toFixed(5);
+  if (k !== MAP.lastK){ MAP.lastK = k; world.style.setProperty('--k', k); }
   for (var i = 0; i < MAP.markers.length; i++){ var m = MAP.markers[i]; m.sx = m.x * c.s + tx; m.sy = m.y * c.s + ty; }
   if (MAP.mode !== 'country') declutterRegion(MAP.mode);
   for (i = 0; i < MAP.markers.length; i++){
@@ -367,6 +368,12 @@ function bindMapGestures(){
 }
 
 // ── Modes ────────────────────────────────────────────────────
+// Keyboard-triggered changes skip the camera flight (fades stay): a key press
+// should land at once. A click from Enter or Space has event.detail 0.
+function fromKeyboard(){
+  var e = window.event;
+  return !!e && (e.type === 'keydown' || e.type === 'keyup' || (e.type === 'click' && e.detail === 0));
+}
 function setMarkerGroup(key, show, enter){
   var list = document.querySelectorAll('#map-overlay .mk[data-k="' + key + '"]');
   for (var i = 0; i < list.length; i++){
@@ -385,7 +392,7 @@ function setMarkerGroup(key, show, enter){
 
 function mapRegion(k){
   if (MAP.mode === k) return;
-  var prev = MAP.mode;
+  var prev = MAP.mode, instant = REDUCE || fromKeyboard();
   preloadRegion(k);
   MAP.mode = k; MAP.venueSel = -1;
   // decoration leaves together, immediately
@@ -394,9 +401,9 @@ function mapRegion(k){
   document.querySelectorAll('.mk-venue').forEach(function(el){ el.classList.remove('sel'); });
   var dur = 760;
   // support layers arrive in the last part of the flight, so they land with the camera
-  setTimeout(function(){ if (MAP.mode === k){ setMarkerGroup('town-' + k, true); setMarkerGroup('venue-' + k, true, true); } }, REDUCE ? 0 : Math.round(dur * 0.6));
+  setTimeout(function(){ if (MAP.mode === k){ setMarkerGroup('town-' + k, true); setMarkerGroup('venue-' + k, true, !instant); } }, instant ? 0 : Math.round(dur * 0.6));
   // switching the app region rebuilds several sections: only once the camera has landed
-  flyTo(regionCam(k), dur, function(){ if (MAP.mode === k && canUseRegion(k) && k !== currentRegion) setRegion(k); });
+  flyTo(regionCam(k), instant ? 0 : dur, function(){ if (MAP.mode === k && canUseRegion(k) && k !== currentRegion) setRegion(k); });
   document.getElementById('crumb').classList.add('deep');
   document.getElementById('crumb-here').textContent = REGION_META[k].short;
   document.getElementById('crumb-home').setAttribute('aria-label', 'Back to all of South Africa from ' + REGION_META[k].short);
@@ -405,11 +412,12 @@ function mapRegion(k){
 }
 
 function mapHome(){
-  if (MAP.mode === 'country'){ flyTo(countryCam(), 500); return; }
+  var instant = REDUCE || fromKeyboard();
+  if (MAP.mode === 'country'){ flyTo(countryCam(), instant ? 0 : 500); return; }
   var prev = MAP.mode; MAP.mode = 'country'; MAP.venueSel = -1;
   setMarkerGroup('venue-' + prev, false); setMarkerGroup('town-' + prev, false);
-  flyTo(countryCam(), 650);
-  setTimeout(function(){ if (MAP.mode === 'country') setMarkerGroup('country', true); }, REDUCE ? 0 : 380);
+  flyTo(countryCam(), instant ? 0 : 650);
+  setTimeout(function(){ if (MAP.mode === 'country') setMarkerGroup('country', true); }, instant ? 0 : 380);
   document.getElementById('crumb').classList.remove('deep');
   document.getElementById('crumb-home').setAttribute('aria-label', 'Back to all of South Africa');
   document.getElementById('map-hint').textContent = 'Drag to pan. Pinch or hold Ctrl and scroll to zoom.';
