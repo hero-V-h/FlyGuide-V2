@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<meta name="theme-color" content="#1F3D29"/>
+<meta name="theme-color" content="#ECE7D8" media="(prefers-color-scheme: light)"/>
+<meta name="theme-color" content="#14150E" media="(prefers-color-scheme: dark)"/>
+<meta name="color-scheme" content="light dark"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="FlyGuide"/>
@@ -13,10 +15,10 @@
 <meta property="og:description" content="Pick the right fly before you reach the water. Four trout regions, one guide."/>
 <meta property="og:type" content="website"/>
 <meta name="mobile-web-app-capable" content="yes"/>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231F3D29'/%3E%3Cpath d='M19 7v11a5 5 0 0 1-10 0v-2' fill='none' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M19 10c3-3 7-3 7.5-1.8S24.5 12.5 19 13' fill='none' stroke='%23D08A4A' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E"/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234A5527'/%3E%3Cpath d='M19 7v11a5 5 0 0 1-10 0v-2' fill='none' stroke='%23F7F4EA' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M19 10c3-3 7-3 7.5-1.8S24.5 12.5 19 13' fill='none' stroke='%23D6A13C' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet"/>
 <!--BUILD:head-scripts-->
 <style>
 <!--BUILD:styles-->
@@ -29,19 +31,14 @@
 
 <!-- ═══ AUTH ═══ -->
 <div class="auth-overlay" id="auth-overlay" role="dialog" aria-modal="true" aria-labelledby="auth-heading">
-  <div class="auth-split">
-    <div class="auth-photo">
-      <img id="auth-photo-img" alt="Angler casting on a highland stream in the Eastern Cape"/>
-      <div class="auth-photo-copy">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-card-head contour">
         <div class="brand"><span class="brand-mark"><svg><use href="#i-fly"/></svg></span><span>FlyGuide</span></div>
-        <h2 class="heading-4">Four regions.<br/>One guide in your pocket.</h2>
+        <h1 class="heading-4" id="auth-heading">Four regions. One guide in your pocket.</h1>
         <p class="body-6">Fly picks weighted to today's water, local venue notes and hatch calendars for Dullstroom, the Drakensberg, the Eastern Cape Highlands and the Cape streams.</p>
       </div>
-    </div>
-    <div class="auth-pane">
       <div class="auth-box">
-        <h1 class="heading-5" id="auth-heading">Welcome to FlyGuide</h1>
-        <p class="body-6">South Africa's fly fishing guide. Sign in or start your free trial.</p>
         <div class="auth-tabs" role="tablist">
           <button class="auth-tab active" role="tab" aria-selected="true" aria-controls="auth-form-login" onclick="switchAuthTab('login',this)" id="auth-tab-login">Sign in</button>
           <button class="auth-tab" role="tab" aria-selected="false" aria-controls="auth-form-signup" onclick="switchAuthTab('signup',this)" id="auth-tab-signup">Create account</button>
@@ -121,29 +118,18 @@
 <div class="wrap">
 
 <!-- ═══ EXPLORE ═══ -->
-<section id="panel-explore" class="panel active" aria-labelledby="hero-title">
-  <div class="hero" id="hero">
-    <div class="hero-media" id="hero-media"></div>
-    <div class="hero-scrim"></div>
-    <div class="hero-grain"></div>
-    <div class="hero-inner">
-      <div class="hero-eyebrow"><span class="dot"></span><span id="hero-tag">Dullstroom · Mpumalanga Highlands</span></div>
-      <h1 class="heading-1" id="hero-title">Pick the right fly<br/>before you reach the water.</h1>
-      <p class="body-3 hero-sub" id="hero-sub">Fly recommendations weighted to today's conditions, built on local guide knowledge across South Africa's four great trout regions.</p>
-      <div class="hero-actions">
-        <button class="btn btn-primary" onclick="go('recommend')"><svg><use href="#i-target"/></svg>Get today's recommendation</button>
-        <button class="btn btn-glass" onclick="document.getElementById('map-card').scrollIntoView({behavior:'smooth',block:'start'})"><svg><use href="#i-map"/></svg>Explore the map</button>
-      </div>
-      <div class="hero-proof">
-        <div><b id="hp-flies">25</b><span>patterns in this region</span></div>
-        <div><b id="hp-venues">4</b><span>featured waters</span></div>
-        <div><b id="hp-best">Mar to May</b><span>prime season</span></div>
-      </div>
+<section id="panel-explore" class="panel active" aria-labelledby="explore-title">
+  <header class="explore-head">
+    <div>
+      <div class="eyebrow">Field guide · <span id="hero-tag">Dullstroom · Mpumalanga Highlands</span></div>
+      <h1 class="heading-2" id="explore-title">The waters of South Africa</h1>
     </div>
-  </div>
+    <div class="explore-head-actions">
+      <button class="btn btn-primary" onclick="go('recommend')"><svg><use href="#i-target"/></svg>Today's flies</button>
+    </div>
+  </header>
 
-  <div class="section" id="map-section">
-    <div class="sec-head"><div><div class="eyebrow" style="color:var(--copper)">Where are you fishing</div><h2 class="heading-4" style="margin-top:var(--s-50)">The waters of South Africa</h2></div></div>
+  <div id="map-section">
     <div class="map-card" id="map-card" style="scroll-margin-top:calc(var(--nav-h) + var(--s-300))">
       <div class="map-stage" id="map-stage" role="region" aria-label="Satellite map of South Africa's trout regions">
         <div class="map-world" id="map-world" aria-hidden="true"></div>
@@ -175,30 +161,48 @@
     </div>
   </div>
 
-  <div class="section">
-    <div class="overview">
-      <div class="card">
-        <div class="eyebrow" style="color:var(--copper)">Season at a glance</div>
-        <h3 class="heading-6" style="margin-top:var(--s-50)" id="ov-title">Dullstroom trout calendar</h3>
-        <p class="body-6 muted" id="ov-best" style="margin-top:var(--s-50)"></p>
-        <div class="season-bar" id="season-bar" role="list" aria-label="Season rating by month"></div>
-        <div class="legend"><span><i style="background:var(--forest)"></i>Prime</span><span><i style="background:#6E8F75"></i>Good</span><span><i style="background:#C9B27C"></i>Technical</span><span><i style="background:var(--border)"></i>Weather dependent or closed</span></div>
+  <div class="caption contour">
+    <div>
+      <h2 class="heading-3" id="hero-title">Pick the right fly before you reach the water.</h2>
+      <p class="body-3 caption-sub" id="hero-sub">Fly recommendations weighted to today's conditions, built on local guide knowledge across South Africa's four great trout regions.</p>
+      <div class="caption-actions">
+        <button class="btn btn-primary" onclick="go('recommend')"><svg><use href="#i-target"/></svg>Get today's recommendation</button>
+        <button class="btn btn-secondary" onclick="go('flybox')"><svg><use href="#i-fly"/></svg>Open the fly box</button>
       </div>
-      <div class="card" style="display:flex;flex-direction:column;gap:var(--s-100)">
-        <div class="eyebrow" style="color:var(--copper)">This month</div>
-        <h3 class="heading-6" id="tm-title">July</h3>
-        <p class="body-6" id="tm-flies" style="color:var(--ink-2)"></p>
-        <p class="caption-5 muted" id="tm-note"></p>
-        <div style="display:flex;gap:var(--s-75);flex-wrap:wrap;margin-top:auto;padding-top:var(--s-100)">
-          <button class="btn btn-forest btn-sm" onclick="go('hatch')"><svg><use href="#i-calendar"/></svg>Full calendar</button>
-          <button class="btn btn-secondary btn-sm" onclick="go('flybox')"><svg><use href="#i-fly"/></svg>Fly box</button>
-        </div>
+    </div>
+    <div class="proof">
+      <div><b id="hp-flies">25</b><span>Patterns in this region</span></div>
+      <div><b id="hp-venues">4</b><span>Featured waters</span></div>
+      <div><b id="hp-best">Mar to May</b><span>Prime season</span></div>
+    </div>
+  </div>
+
+  <div class="section overview">
+    <figure class="plate">
+      <div class="hero-media" id="hero-media"></div>
+      <figcaption><b id="plate-name">Dullstroom</b><span id="plate-sub">Mpumalanga Highlands</span></figcaption>
+    </figure>
+    <div class="card">
+      <div class="eyebrow">Season at a glance</div>
+      <h3 class="card-title" id="ov-title">Dullstroom trout calendar</h3>
+      <p class="body-6 muted" id="ov-best" style="margin-top:var(--s-50)"></p>
+      <div class="season-bar" id="season-bar" role="list" aria-label="Season rating by month"></div>
+      <div class="legend"><span><i class="lg-prime"></i>Prime</span><span><i class="lg-good"></i>Good</span><span><i class="lg-tech"></i>Technical</span><span><i class="lg-wd"></i>Weather dependent or closed</span></div>
+    </div>
+    <div class="card month-card">
+      <div class="eyebrow">This month</div>
+      <h3 class="card-title" id="tm-title">July</h3>
+      <p class="body-6" id="tm-flies" style="color:var(--ink-2)"></p>
+      <p class="caption-5 muted" id="tm-note"></p>
+      <div class="month-actions">
+        <button class="btn btn-forest btn-sm" onclick="go('hatch')"><svg><use href="#i-calendar"/></svg>Full calendar</button>
+        <button class="btn btn-secondary btn-sm" onclick="go('flybox')"><svg><use href="#i-fly"/></svg>Fly box</button>
       </div>
     </div>
   </div>
 
   <div class="section" id="venues-section">
-    <div class="sec-head"><div><div class="eyebrow" style="color:var(--copper)">Featured waters</div><h2 class="heading-4" style="margin-top:var(--s-50)" id="venues-title">Dullstroom venues</h2></div></div>
+    <div class="sec-head"><div><div class="eyebrow">Featured waters</div><h2 class="heading-4" style="margin-top:var(--s-50)" id="venues-title">Dullstroom venues</h2></div></div>
     <div id="venues-content"></div>
   </div>
 </section>

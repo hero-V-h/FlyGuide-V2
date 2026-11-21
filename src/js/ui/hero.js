@@ -9,7 +9,6 @@ function primeRanges(hatch){
 function buildHeroMedia(){
   var media = document.getElementById('hero-media'), alts = {dullstroom:'Angler casting across a still dam near Dullstroom', kzn:'Rocky Drakensberg stream below the Amphitheatre in KwaZulu-Natal', ec:'Angler nymphing a grassy Eastern Cape highland stream', cape:'Angler wading a clear mountain river below Western Cape peaks'};
   media.innerHTML = REGION_ORDER.map(function(k){ return '<img data-k="' + k + '" src="' + REGION_HERO_IMAGES[k] + '" alt="' + alts[k] + '" fetchpriority="high" decoding="async"/>'; }).join('');
-  document.getElementById('auth-photo-img').src = REGION_HERO_IMAGES.ec;
 }
 
 function setHero(k){ document.querySelectorAll('#hero-media img').forEach(function(img){ img.classList.toggle('on', img.getAttribute('data-k') === k); }); }
@@ -22,6 +21,8 @@ function setRegion(regionKey, opts){
   var R = REGIONS[regionKey];
   setHero(regionKey);
   document.getElementById('hero-tag').textContent = R.tag;
+  document.getElementById('plate-name').textContent = R.name;
+  document.getElementById('plate-sub').textContent = REGION_META[regionKey].sub;
   document.getElementById('region-pill-label').textContent = REGION_META[regionKey].short;
   ['rec-eyebrow','fb-eyebrow','ha-eyebrow'].forEach(function(id){ document.getElementById(id).textContent = R.name; });
   var pr = primeRanges(R.hatch);

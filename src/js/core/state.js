@@ -1,5 +1,7 @@
 // Shared app state, constants and small helpers. Loaded first in the app script.
 
+// Read a theme token (charts take colours from the active light or dark palette)
+function cssVar(name){ try { return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || '#565A45'; } catch(e) { return '#565A45'; } }
 function ic(n){ return '<svg aria-hidden="true"><use href="#i-' + n + '"/></svg>'; }
 var REDUCE = false;
 try { REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch(e) {}

@@ -53,6 +53,8 @@ test('focus stays inside an open sheet and moves to the new view heading', async
   await expect(page.locator('#ha-h')).toBeFocused();
 });
 
+for (const scheme of ['light', 'dark'] as const) test.describe(scheme + ' theme', () => {
+test.use({ colorScheme: scheme });
 test('text contrast passes AA on every panel', async ({ page }) => {
   await openApp(page); await asOwner(page);
   for (const p of ['explore', 'recommend', 'flybox', 'knowledge', 'hatch', 'rig', 'tippet', 'log', 'stats', 'chat']) {
@@ -76,4 +78,5 @@ test('text contrast passes AA on every panel', async ({ page }) => {
     });
     expect(fails, p).toEqual([]);
   }
+});
 });

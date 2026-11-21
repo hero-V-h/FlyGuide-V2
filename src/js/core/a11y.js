@@ -91,6 +91,7 @@ function ensureReadable(root){
     if (!own) return;
     var cs = getComputedStyle(el), fs = parseFloat(cs.fontSize);
     if (fs === 0 || el.closest('[aria-hidden="true"]')) return;   // text hidden on purpose
+    if (el.closest('svg')) return;   // SVG text is coloured by fill and drawn on its own plate
     if (fs < 12) el.style.fontSize = '12px';
     // nearest solid background (stop at the first opaque one)
     var holder = el, bg = null;

@@ -8,6 +8,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import * as esbuild from 'esbuild';
+import { contourDataUri } from './contours.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const r = (p) => path.join(ROOT, p);
@@ -77,7 +78,9 @@ for (const name of ['go', 'mapRegion', 'selectVenue', 'handleLogin', 'handleSign
   if (!new RegExp('function ' + name + '\\(').test(appOut)) throw new Error('Minifier renamed global function ' + name);
 }
 const shim = (await esbuild.transform(read('src/js/storage-shim.js'), { loader: 'js', target: 'es2019', minify: !DEV })).code;
-const css = (await esbuild.transform(read('src/styles.css'), { loader: 'css', minify: !DEV, target: ['chrome100', 'safari15', 'firefox100'] })).code;
+// Topographic contour texture, generated (see scripts/contours.mjs) and used as a CSS mask
+const contourCss = ':root{--contours:url("' + contourDataUri({ seed: 11 }) + '")}\n';
+const css = (await esbuild.transform(contourCss + read('src/styles.css'), { loader: 'css', minify: !DEV, target: ['chrome100', 'safari15', 'firefox100'] })).code;
 
 const safeScript = (s) => s.replace(/<\/script/gi, '<\\/script').replace(/<!--/g, '<\\!--');
 const headScripts =

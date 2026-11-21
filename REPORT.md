@@ -4,7 +4,7 @@
 
 FlyGuide v20 is built. `dist/FlyGuide_v20.html` is one self-contained file at **3.21 MB** (limit 4 MB). The main change is a real satellite map of South Africa built into the file. Everything else from v19 is kept: content, logic, fixes and visual system. The code is now a small vanilla JS project with a one-command build.
 
-- **Tests:** 43 Playwright tests pass at 390×844 and 1440×900. The other 5 are skipped on purpose because they apply to one viewport only (mouse wheel, double click and budget on desktop; pinch and the 390 px overflow check on phone).
+- **Tests:** 47 Playwright tests pass at 390×844 and 1440×900. The other 5 are skipped on purpose because they apply to one viewport only (mouse wheel, double click and budget on desktop; pinch and the 390 px overflow check on phone).
 - **Screenshots:** 45 screens in `dist/screenshots/`, both sizes.
 
 ```
@@ -158,7 +158,7 @@ The KZN region marker moved from (29.65, −29.35) to (29.80, −29.30) so it cl
 
 ## Tests (Playwright, Chromium 390×844 and 1440×900, external network blocked)
 
-`npx playwright test` reports **43 passed and 5 skipped**. The skips are tests that only apply to one viewport.
+`npx playwright test` reports **47 passed and 5 skipped**. The skips are tests that only apply to one viewport.
 
 1. **No page errors:** an auto fixture fails any test with a page error or console error.
 2. **Sandbox:** the built file loads through `srcdoc` into `<iframe sandbox="allow-scripts">`, and the storage shim is confirmed active. The flow:
@@ -212,6 +212,35 @@ After the first build, the app was audited against the UI/UX Pro Max rule set (`
 v19's Learn content is still word for word. Its few colour and size problems are fixed at render time by a safety net (`ensureReadable` in `src/js/core/a11y.js`). The safety net darkens a coloured band behind light text until it passes AA, and raises text under 12 px. Text hidden on purpose (size 0 or `aria-hidden`) is skipped.
 
 New tests in `tests/a11y.spec.ts`: ARIA state sync, the star radio group, the password toggle, the focus trap, focus moving to the new heading, and an AA contrast sweep over all ten panels.
+
+## Redesign: field journal
+
+After the UI/UX pass, the whole visual design was redone from ten answers given in the session. These choices replace the brief's section 6 tokens (Geist, forest and copper, max weight 600). The structure, content, logic and accessibility behaviour are unchanged.
+
+| Question | Answer | How it's built |
+|---|---|---|
+| Overall feel | Field journal | Paper cards, dashed rules, mono field-note labels, journal-style map chrome |
+| Theme | Both, following the phone | Light and dark token sets switched by `prefers-color-scheme`, with a `data-theme` override |
+| Colour | Highveld earth | Olive `#4A5527`, grassland gold `#D6A13C`, rust `#9E3D1B`, sandstone paper `#ECE7D8`, with a slate water tone. Dark mode uses lighter tonal versions, not inverted colours |
+| Type | Bold condensed sans | Archivo at 72% width and weight 800 for display and signage, Archivo for text, IBM Plex Mono for figures and labels (Google Fonts) |
+| Home screen | Map first, sign-in over it | Explore opens on the satellite map. The pitch, calls to action and region figures sit in a caption below it. Sign-in is a journal card over the live map |
+| Navigation | Current structure | Unchanged: bottom tabs on phones, top links on desktop |
+| Fly cards | Photos when online | Wikipedia lookup kept. The placeholder is now a contour plate with the pattern name |
+| Motion | Considered moments | The map flight; the four recommended flies dealt onto the page (rise with a slight settle, staggered); the region photo crossfade; everything else quick fades |
+| Map look | True colour, journal chrome | Imagery untouched. Region labels are paper luggage tags with an eyelet, venue pins are paper discs ringed in olive (gold when selected), controls are paper chips |
+| Journal details | Topo contour lines | A contour texture generated at build time (`scripts/contours.mjs`) by marching squares over a seeded terrain field, with heavier index contours every fifth line. It's used as a CSS mask, so it takes the theme's colour. It appears in page headers, the caption, the sign-in card, venue details, empty states and fly placeholders |
+
+Supporting changes:
+- Gold is the primary action colour (trail-sign yellow with dark text). Olive is structure, rust is for labels, locks and alerts, and slate is for water and tips.
+- The four region photos moved from the old hero into a "region plate" beside the season calendar. They still crossfade on region change.
+- Charts read their colours from the active theme, so they work in both modes.
+- v19's diagrams are drawn for a light page, so they sit on a fixed light "printed plate" in both themes, with their lettering set in Archivo.
+- Old token names (`--forest`, `--copper`, `--river`, `--amber`) are aliased to the new palette, so v19's inline content follows the redesign without edits.
+
+Verification:
+- The AA contrast sweep now runs in both light and dark on every panel.
+- Dark-theme screenshots (prefixed `-dark-`) sit beside the light ones in `dist/screenshots/`.
+- On phones, region tags got smaller padding, and a collision nudge keeps any two from overlapping at any width.
 
 ## Known limitations (carried over)
 

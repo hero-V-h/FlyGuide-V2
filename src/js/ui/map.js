@@ -81,7 +81,7 @@ function buildMap(){
       if (MAP.W && (Math.abs(oldW - MAP.W) > 1 || Math.abs(oldH - MAP.H) > 1)){ stopFlight(); MAP.markers.forEach(function(m){ m.lw = undefined; }); var c = countryCam(); MAP.cam = MAP.mode === 'country' ? c : regionCam(MAP.mode); renderMap(); }
     }).observe(document.getElementById('map-stage'));
   }
-  // Label widths change once Geist arrives
+  // Label widths change once the web fonts arrive
   try { if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ chipCache = null; MAP.markers.forEach(function(m){ m.lw = undefined; m.tw = undefined; }); requestRender(); }); } catch(e) {}
   // Warm the other regions' imagery when the browser is idle
   var idle = window.requestIdleCallback || function(fn){ return setTimeout(fn, 1500); };
@@ -244,6 +244,15 @@ function measureChips(){
     chipCache._labels.push({ m: m, el: inner, w: inner.offsetWidth, h: inner.offsetHeight, dx: 0 });
   });
 }
+// Screen rectangle of a region chip, including its current nudge
+function chipRect(k, tx, ty){
+  var ch = chipCache[k], c = MAP.cam, w = proj(REGION_META[k].c), px = w[0] * c.s + tx, py = w[1] * c.s + ty, L, T;
+  if (ch.dir === 'up'){ L = px - ch.w / 2; T = py - 20 - ch.h; }
+  else if (ch.dir === 'down'){ L = px - ch.w / 2; T = py + 20; }
+  else if (ch.dir === 'right'){ L = px + 20; T = py - ch.h / 2; }
+  else { L = px - 20 - ch.w; T = py - ch.h / 2; }
+  return { x0: L + ch.dx, y0: T + ch.dy, x1: L + ch.dx + ch.w, y1: T + ch.dy + ch.h };
+}
 function placeRegionChips(tx, ty){
   if (!chipCache) measureChips();
   var W = MAP.W, H = MAP.H, c = MAP.cam, g = 8, inset = 16, Z = chipCache._zoom, C = chipCache._crumb;
@@ -266,6 +275,17 @@ function placeRegionChips(tx, ty){
       ch.el.style.setProperty('--lx', dx.toFixed(1) + 'px'); ch.el.style.setProperty('--ly', dy.toFixed(1) + 'px');
     }
   });
+  // Two chips that still touch: move the lower one down (or the upper one up near the bottom edge)
+  var keys = REGION_ORDER.filter(function(k){ return chipCache[k] && chipCache[k].w; });
+  for (var it = 0; it < 2; it++) for (var a = 0; a < keys.length; a++) for (var b = a + 1; b < keys.length; b++){
+    var A = chipRect(keys[a], tx, ty), B = chipRect(keys[b], tx, ty);
+    if (!(A.x0 < B.x1 && B.x0 < A.x1 && A.y0 < B.y1 && B.y0 < A.y1)) continue;
+    var low = A.y0 > B.y0 ? keys[a] : keys[b], high = low === keys[a] ? keys[b] : keys[a];
+    var Lr = chipRect(low, tx, ty), Hr = chipRect(high, tx, ty), push = Hr.y1 + 4 - Lr.y0;
+    var ch = chipCache[low];
+    if (Lr.y1 + push <= H - g){ ch.dy += push; } else { chipCache[high].dy -= push; chipCache[high].el.style.setProperty('--ly', chipCache[high].dy.toFixed(1) + 'px'); }
+    ch.el.style.setProperty('--ly', ch.dy.toFixed(1) + 'px');
+  }
   // Country labels: keep them inside the stage and clear of the zoom controls
   chipCache._labels.forEach(function(lb){
     if (!lb.w) return;

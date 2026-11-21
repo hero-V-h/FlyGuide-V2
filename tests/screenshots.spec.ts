@@ -21,7 +21,7 @@ test('screens', async ({ page }, info) => {
   await asOwner(page);
   await page.evaluate(() => { (window as any).print = () => {}; document.getElementById('toast')!.style.visibility = 'hidden'; });
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior }));
-  await shot(page, P, '02-explore-hero');
+  await shot(page, P, '02-explore-home');
   await scrollToMap(page);
   await page.evaluate(() => window.scrollBy({ top: -96, behavior: 'instant' as ScrollBehavior }));
   await page.waitForTimeout(500);
@@ -71,4 +71,41 @@ test('screens', async ({ page }, info) => {
   await page.evaluate(() => (window as any).showPlanScreen()); await shot(page, P, '18-plan-screen');
   await page.evaluate(() => (window as any).closePlanScreen());
   await page.evaluate(() => (window as any).showLegal('privacy')); await shot(page, P, '19-legal-modal');
+});
+
+// Dark theme: the key screens again
+test.describe('dark theme', () => {
+  test.use({ colorScheme: 'dark' });
+  test('screens (dark)', async ({ page }, info) => {
+    test.setTimeout(180_000);
+    const P = info.project.name + '-dark';
+    await openApp(page, { allow: /fonts\.(googleapis|gstatic)\.com|cdnjs\.cloudflare\.com/ });
+    await page.evaluate(() => (document as any).fonts.ready);
+    await shot(page, P, '01-auth');
+    await asOwner(page);
+    await page.evaluate(() => { document.getElementById('toast')!.style.visibility = 'hidden'; window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior }); });
+    await shot(page, P, '02-explore-home');
+    await page.locator('.mk[data-r="kzn"] .mk-btn').click();
+    await waitFlight(page);
+    await page.locator('.mk[data-i="Vkzn1"] .v-btn').click();
+    await page.evaluate(() => { document.getElementById('map-card')!.scrollIntoView({ block: 'start', behavior: 'instant' as ScrollBehavior }); window.scrollBy({ top: -96, behavior: 'instant' as ScrollBehavior }); });
+    await shot(page, P, '04-map-region-kzn');
+    await page.evaluate(() => (window as any).mapHome()); await waitFlight(page);
+    await page.evaluate(() => (window as any).setRegion('dullstroom', { silent: true }));
+    await page.evaluate(() => { document.querySelector('.overview')!.scrollIntoView({ block: 'start', behavior: 'instant' as ScrollBehavior }); window.scrollBy({ top: -96, behavior: 'instant' as ScrollBehavior }); });
+    await shot(page, P, '03-explore-overview');
+    await go(page, 'recommend');
+    await page.getByRole('button', { name: 'Get recommendation' }).click();
+    await page.waitForTimeout(700);
+    if (info.project.name === 'desktop') await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior }));
+    await shot(page, P, '06-recommend-results');
+    await go(page, 'knowledge');
+    await page.locator('.know-nav-btn').nth(4).click();
+    const head = page.locator('#know-knots .know-card-header').first();
+    if ((await head.getAttribute('aria-expanded')) !== 'true') await head.click();
+    await page.waitForTimeout(300);
+    await shot(page, P, '08-learn-knots');
+    await go(page, 'log'); await shot(page, P, '12-catch-log');
+    await page.evaluate(() => (window as any).showPlanScreen()); await shot(page, P, '18-plan-screen');
+  });
 });
