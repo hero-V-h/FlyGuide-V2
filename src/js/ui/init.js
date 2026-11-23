@@ -7,6 +7,7 @@
   document.querySelectorAll('.press-btn[role="radio"]').forEach(function(b){ b.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); b.click(); } }); });
   document.querySelectorAll('.plan-card').forEach(function(c){ c.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); c.click(); } }); });
   watchAriaState();
+  syncThemeButton();
   buildHeroMedia();
   var m = new Date().getMonth() + 1;
   document.getElementById('month').value = m;

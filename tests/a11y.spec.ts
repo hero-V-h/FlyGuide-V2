@@ -80,3 +80,19 @@ test('text contrast passes AA on every panel', async ({ page }) => {
   }
 });
 });
+
+test('theme button switches light and dark and remembers the choice', async ({ page }) => {
+  await openApp(page); await asGuest(page);
+  const btn = page.locator('#theme-btn');
+  await expect(btn).toBeVisible();
+  const before = await page.evaluate(() => (window as any).currentTheme());
+  await btn.click();
+  const after = await page.evaluate(() => (window as any).currentTheme());
+  expect(after).not.toBe(before);
+  await expect(page.locator('html')).toHaveAttribute('data-theme', after);
+  await expect(btn).toHaveAttribute('aria-label', after === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+  expect(bg).toBe(after === 'dark' ? 'rgb(18, 19, 16)' : 'rgb(234, 229, 218)');
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', after);
+});

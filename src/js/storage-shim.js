@@ -9,3 +9,9 @@
     if (!ok) { try { Object.defineProperty(window, n, { value: mem(), configurable: true }); } catch(e) {} }
   });
 })();
+
+// Apply the saved light or dark choice before the page paints (no flash of the wrong theme).
+// With no saved choice the page follows the system setting.
+(function(){
+  try { var t = localStorage.getItem('fg_theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch(e) {}
+})();

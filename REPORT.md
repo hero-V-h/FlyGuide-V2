@@ -4,7 +4,7 @@
 
 FlyGuide v20 is built. `dist/FlyGuide_v20.html` is one self-contained file at **3.21 MB** (limit 4 MB). The main change is a real satellite map of South Africa built into the file. Everything else from v19 is kept: content, logic, fixes and visual system. The code is now a small vanilla JS project with a one-command build.
 
-- **Tests:** 47 Playwright tests pass at 390×844 and 1440×900. The other 5 are skipped on purpose because they apply to one viewport only (mouse wheel, double click and budget on desktop; pinch and the 390 px overflow check on phone).
+- **Tests:** 49 Playwright tests pass at 390×844 and 1440×900. The other 5 are skipped on purpose because they apply to one viewport only (mouse wheel, double click and budget on desktop; pinch and the 390 px overflow check on phone).
 - **Screenshots:** 45 screens in `dist/screenshots/`, both sizes.
 
 ```
@@ -158,7 +158,7 @@ The KZN region marker moved from (29.65, −29.35) to (29.80, −29.30) so it cl
 
 ## Tests (Playwright, Chromium 390×844 and 1440×900, external network blocked)
 
-`npx playwright test` reports **47 passed and 5 skipped**. The skips are tests that only apply to one viewport.
+`npx playwright test` reports **49 passed and 5 skipped**. The skips are tests that only apply to one viewport.
 
 1. **No page errors:** an auto fixture fails any test with a page error or console error.
 2. **Sandbox:** the built file loads through `srcdoc` into `<iframe sandbox="allow-scripts">`, and the storage shim is confirmed active. The flow:
@@ -254,6 +254,10 @@ After the redesign, the layout was simplified on request:
 - **Map:** the gesture hint fades once the map has been dragged, pinched or zoomed. The credits chip is smaller and follows the theme.
 - **Top bar:** the plan chip shows only when it tells you something (trial days left, trial expired, free plan).
 - **Layout fixes:** the fly cards' dealt-in rotation is clipped, so it can't widen the page. On phones the longest page title steps down to 34 px.
+
+### Light and dark switch
+
+A sun/moon button on the right of the top bar switches between light and dark. The choice is saved in the browser (`fg_theme`) and applied before the page paints, so the wrong theme never flashes. With no saved choice, the app follows the system setting and updates if that setting changes. The button's label states the action ("Switch to dark mode"). Switching also updates the browser's theme colour and redraws the stats charts in the new palette. A test checks the switch, the label and that the choice survives a reload.
 
 ## Known limitations (carried over)
 

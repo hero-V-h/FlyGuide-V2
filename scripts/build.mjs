@@ -61,7 +61,7 @@ const ORDER = [
   '@hero', '@map',
   'src/js/core/state.js', 'src/js/core/a11y.js', 'src/js/core/images.js', 'src/js/core/scoring.js', 'src/js/core/weather.js', 'src/js/core/tools.js',
   'src/js/core/log.js', 'src/js/core/auth.js', 'src/js/core/chat.js', 'src/js/core/knowledge.js',
-  'src/js/ui/sheets.js', 'src/js/ui/nav.js', 'src/js/ui/hero.js', 'src/js/ui/map.js', 'src/js/ui/init.js'
+  'src/js/ui/sheets.js', 'src/js/ui/nav.js', 'src/js/ui/hero.js', 'src/js/ui/map.js', 'src/js/ui/theme.js', 'src/js/ui/init.js'
 ];
 // Every src/js file must be listed, so nothing is silently left out
 const listed = new Set(ORDER.filter((f) => !f.startsWith('@')));
